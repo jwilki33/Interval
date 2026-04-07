@@ -1,0 +1,51 @@
+/* Interval — local fonts from assets/fonts */
+
+@font-face {
+  font-family: "Rinter";
+  src:
+    url("../assets/fonts/Rinter/Rinter/Web-PS/Rinter.woff2") format("woff2"),
+    url("../assets/fonts/Rinter/Rinter/Web-PS/Rinter.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Founders Grotesk Mono";
+  src: url("../assets/fonts/Founders Grotesk Mono 2014/FoundersGroteskMonoLight.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Founders Grotesk Mono";
+  src: url("../assets/fonts/Founders Grotesk Mono 2014/FoundersGroteskMonoRegular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Founders Grotesk Mono";
+  src: url("../assets/fonts/Founders Grotesk Mono 2014/FoundersGroteskMonoMedium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Founders Grotesk Mono";
+  src: url("../assets/fonts/Founders Grotesk Mono 2014/FoundersGroteskMonoDemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Founders Grotesk Mono";
+  src: url("../assets/fonts/Founders Grotesk Mono 2014/FoundersGroteskMonoBold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
