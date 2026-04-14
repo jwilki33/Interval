@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interval — Welcome</title>
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem("interval_theme") === "light") {
+            document.documentElement.setAttribute("data-theme", "light");
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="css/live-session.css" />
+    <link rel="stylesheet" href="css/onboarding.css" />
+  </head>
+  <body class="onboarding-body">
+    <div class="onboarding">
+      <div class="onboarding__brand">
+        <svg class="onboarding__logo" viewBox="0 0 32 32" aria-hidden="true" fill="none">
+          <line x1="16" y1="3" x2="16" y2="29" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+          <line x1="27.3" y1="9.5" x2="4.7" y2="22.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+          <line x1="4.7" y1="9.5" x2="27.3" y2="22.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+        </svg>
+        <span class="onboarding__product">Interval</span>
+      </div>
+
+      <div class="onboarding__card">
+        <h1 class="onboarding__title">Welcome</h1>
+        <p class="onboarding__subtitle">
+          Create a quick profile so Interval can greet you and tailor the experience. You can add a full account when sync is available.
+        </p>
+
+        <form id="onboarding-form" class="onboarding__form" novalidate>
+          <div class="onboarding__field">
+            <label class="onboarding__label" for="profile-display-name">Display name</label>
+            <input
+              id="profile-display-name"
+              class="onboarding__input"
+              name="displayName"
+              type="text"
+              autocomplete="name"
+              required
+              maxlength="80"
+              placeholder="How should we address you?"
+            />
+          </div>
+
+          <div class="onboarding__field">
+            <label class="onboarding__label" for="profile-email">Email</label>
+            <input
+              id="profile-email"
+              class="onboarding__input"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              maxlength="120"
+              placeholder="you@example.com"
+            />
+          </div>
+
+          <div class="onboarding__field">
+            <label class="onboarding__label" for="profile-focus">What are you mainly focusing on?</label>
+            <select id="profile-focus" class="onboarding__select" name="focus">
+              <option value="work">Work &amp; career</option>
+              <option value="study">Study &amp; classes</option>
+              <option value="personal">Personal projects</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <p class="onboarding__hint">Passwords and sign-in will connect to your account when cloud sync ships. For now, your profile stays on this device.</p>
+
+          <div class="onboarding__actions">
+            <button type="submit" class="btn-primary onboarding__submit">Continue to Interval</button>
+            <button type="button" class="onboarding__skip" id="onboarding-skip">Skip for now</button>
+          </div>
+        </form>
+
+        <p class="onboarding__footnote">You can revisit or reset your profile later from Settings when that option is added.</p>
+      </div>
+    </div>
+
+    <script src="js/profile.js"></script>
+    <script src="js/onboarding.js" defer></script>
+  </body>
+</html>
