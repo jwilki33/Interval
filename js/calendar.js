@@ -431,48 +431,85 @@
     var el = document.getElementById("cal-detail-content");
     if (!el) return;
 
-    if (!key || !SESSIONS[key]) {
-      el.innerHTML = '<div class="cal-detail-empty"><span>Select a session<br>to view details</span></div>';
+    if (!key) {
+      el.innerHTML = '<div class="cal-detail-empty"><span>Select a day<br>to view details</span></div>';
       return;
     }
 
-    var s     = SESSIONS[key];
-    var d     = new Date(key + "T00:00:00");
+    var d0 = new Date(key + "T00:00:00");
+
+    if (!SESSIONS[key]) {
+      el.innerHTML =
+        '<div class="cal-detail cal-detail--empty-day">'
+        + '<div class="cal-detail__date">'
+        + DAYS_LONG[d0.getDay()] + ", "
+        + MONTHS[d0.getMonth()].slice(0, 3) + " " + d0.getDate() + " " + d0.getFullYear()
+        + "</div>"
+        + '<p class="cal-detail__no-session">No session on this day.</p>'
+        + "</div>";
+      return;
+    }
+
+    var s = SESSIONS[key];
+    var d = d0;
     var color = scoreToColor(s.focusScore);
     var label = focusLabel(s.focusScore);
-    var bd    = computeBreakdown(s.focusScore);
+    var bd = computeBreakdown(s.focusScore);
+    var synthetic = curveNoteIsSynthetic(s);
 
     function minFromPct(pct) {
       return Math.round(pct / 100 * s.duration / 60) + "m";
     }
 
+    var noteText = synthetic
+      ? "Approximate curve from focus score (demo or session saved without a trace)."
+      : "Stability trace from your tracker session.";
+
     el.innerHTML =
       '<div class="cal-detail">'
       + '<div class="cal-detail__date">'
-        + DAYS_LONG[d.getDay()] + ", "
-        + MONTHS[d.getMonth()].slice(0, 3) + " " + d.getDate() + " " + d.getFullYear()
+      + DAYS_LONG[d.getDay()] + ", "
+      + MONTHS[d.getMonth()].slice(0, 3) + " " + d.getDate() + " " + d.getFullYear()
       + "</div>"
 
       + '<div class="cal-detail__score-row">'
-        + '<span class="cal-detail__score" style="color:' + color + '">' + s.focusScore.toFixed(1) + "</span>"
-        + '<span class="cal-detail__score-max">/ 5</span>'
-        + '<span class="cal-detail__score-label" style="color:' + color + '">' + label + "</span>"
+      + '<span class="cal-detail__score" style="color:' + color + '">' + s.focusScore.toFixed(1) + "</span>"
+      + '<span class="cal-detail__score-max">/ 5</span>'
+      + '<span class="cal-detail__score-label" style="color:' + color + '">' + label + "</span>"
       + "</div>"
 
       + '<div class="cal-detail__stats">'
-        + detailRow("Duration", formatDuration(s.duration))
-        + detailRow("Started",  formatStart(s.start))
-        + detailRow("Distractions", s.distractions)
+      + detailRow("Duration", formatDuration(s.duration))
+      + detailRow("Started", formatStart(s.start))
+      + detailRow("Distractions", s.distractions)
+      + "</div>"
+
+      + '<div class="cal-detail__chart-block">'
+      + '<span class="cal-detail__dist-title">Stability curve</span>'
+      + '<p class="cal-detail__chart-note">' + noteText + "</p>"
+      + '<div class="cal-stability-chart-wrap">'
+      + '<svg id="cal-stability-chart" class="cal-stability-chart" viewBox="0 0 600 280" role="img" aria-label="Stability curve for this session"></svg>'
+      + "</div>"
       + "</div>"
 
       + '<div class="cal-detail__dist">'
-        + '<span class="cal-detail__dist-title">Focus breakdown</span>'
-        + distBar("Deep",        "#00c853", bd.deep,        minFromPct(bd.deep))
-        + distBar("Focused",     "#ffd600", bd.focused,     minFromPct(bd.focused))
-        + distBar("Neutral",     "#ff9100", bd.neutral,     minFromPct(bd.neutral))
-        + distBar("Distracted",  "#d50000", bd.distracted,  minFromPct(bd.distracted))
+      + '<span class="cal-detail__dist-title">Focus breakdown</span>'
+      + distBar("Deep", "#00c853", bd.deep, minFromPct(bd.deep))
+      + distBar("Focused", "#ffd600", bd.focused, minFromPct(bd.focused))
+      + distBar("Neutral", "#ff9100", bd.neutral, minFromPct(bd.neutral))
+      + distBar("Distracted", "#d50000", bd.distracted, minFromPct(bd.distracted))
       + "</div>"
       + "</div>";
+
+    var pts = getCurvePointsForSession(s, key);
+    var svg = document.getElementById("cal-stability-chart");
+    if (window.IntervalStabilityChart && typeof window.IntervalStabilityChart.renderHistory === "function" && svg) {
+      window.IntervalStabilityChart.renderHistory(svg, {
+        dataPoints: pts,
+        durationSec: s.duration,
+        sessionStart: parseStartOnDate(key, s.start),
+      });
+    }
   }
 
   function detailRow(label, value) {
@@ -489,6 +526,51 @@
       + '<div class="cal-detail__dist-fill" style="width:' + pct + "%;background:" + color + '"></div>'
       + "</div>"
       + "</div>";
+  }
+
+  function clamp01(x) {
+    return Math.max(0, Math.min(1, x));
+  }
+
+  function parseStartOnDate(dateKey, startStr) {
+    if (!startStr) return null;
+    var p = String(startStr).split(":");
+    var h = parseInt(p[0], 10) || 0;
+    var m = parseInt(p[1], 10) || 0;
+    var d = new Date(dateKey + "T00:00:00");
+    d.setHours(h, m, 0, 0);
+    return d;
+  }
+
+  function buildSyntheticCurve(s, dateKey) {
+    var dur = Math.max(60, s.duration);
+    var steps = Math.min(40, Math.max(8, Math.floor(dur / 90)));
+    var hash = 0;
+    var ci;
+    for (ci = 0; ci < dateKey.length; ci++) hash += dateKey.charCodeAt(ci);
+    var baseNorm = clamp01(1 - (s.focusScore / 5) * 0.92);
+    var pts = [];
+    var i;
+    for (i = 0; i <= steps; i++) {
+      var t = (i / steps) * dur;
+      var wobble =
+        Math.sin(i * 0.65 + s.focusScore * 0.4) * 0.07 + Math.sin(i * 1.1 + hash * 0.01) * 0.05;
+      pts.push({ elapsed: t, norm: clamp01(baseNorm + wobble) });
+    }
+    return pts;
+  }
+
+  function getCurvePointsForSession(s, dateKey) {
+    if (s.curve && s.curve.length >= 2) {
+      return s.curve.map(function (p) {
+        return { elapsed: p.elapsed, norm: p.norm };
+      });
+    }
+    return buildSyntheticCurve(s, dateKey);
+  }
+
+  function curveNoteIsSynthetic(s) {
+    return !s.curve || s.curve.length < 2;
   }
 
   // ─── Main render ──────────────────────────────────────────────────────────────
@@ -513,7 +595,7 @@
     if (view === "day") {
       var k = dateKey(cursor);
       selectedDate = new Date(cursor);
-      renderDetail(SESSIONS[k] ? k : null);
+      renderDetail(k);
     }
 
     updateNavLabel();
@@ -526,7 +608,6 @@
     cells.forEach(function (cell) {
       cell.addEventListener("click", function () {
         var k = this.getAttribute("data-date");
-        if (!SESSIONS[k]) return;
         selectedDate = new Date(k + "T00:00:00");
         render();
         renderDetail(k);
@@ -586,8 +667,7 @@
     window.addEventListener("interval-settings-change", function () {
       render();
       if (selectedDate) {
-        var k = dateKey(selectedDate);
-        renderDetail(SESSIONS[k] ? k : null);
+        renderDetail(dateKey(selectedDate));
       }
     });
   });

@@ -914,6 +914,22 @@
 
     chartInterval = null;
 
+    var curveSnapshot = [];
+
+    var i;
+
+    for (i = 0; i < dataPoints.length; i++) {
+
+      curveSnapshot.push({ elapsed: dataPoints[i].elapsed, norm: dataPoints[i].norm });
+
+    }
+
+    if (curveSnapshot.length === 1 && endedDur > 0) {
+
+      curveSnapshot.push({ elapsed: endedDur, norm: curveSnapshot[0].norm });
+
+    }
+
     state = "idle";
 
     totalSeconds = 0;
@@ -946,7 +962,7 @@
 
       if (fs === null) fs = 0;
 
-      window.IntervalSessionCalendar.recordSession({
+      var payload = {
 
         dateKey: dateKeyFromDate(endedStart),
 
@@ -958,7 +974,15 @@
 
         distractions: endedDist,
 
-      });
+      };
+
+      if (curveSnapshot.length >= 2) {
+
+        payload.curve = curveSnapshot;
+
+      }
+
+      window.IntervalSessionCalendar.recordSession(payload);
 
     }
 

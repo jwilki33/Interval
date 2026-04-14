@@ -34,18 +34,43 @@
     return parseStart(a) <= parseStart(b) ? a : b;
   }
 
+  function mergeCurves(existingCurve, incomingCurve, durExisting) {
+    if (!incomingCurve || !incomingCurve.length) {
+      return existingCurve && existingCurve.length ? existingCurve.slice() : null;
+    }
+    var inc = incomingCurve.map(function (p) {
+      return { elapsed: p.elapsed, norm: p.norm };
+    });
+    if (!existingCurve || !existingCurve.length) {
+      return inc.map(function (p) {
+        return { elapsed: durExisting + p.elapsed, norm: p.norm };
+      });
+    }
+    var out = existingCurve.map(function (p) {
+      return { elapsed: p.elapsed, norm: p.norm };
+    });
+    var i;
+    for (i = 0; i < inc.length; i++) {
+      out.push({ elapsed: durExisting + inc[i].elapsed, norm: inc[i].norm });
+    }
+    return out;
+  }
+
   function mergeDay(existing, incoming) {
     if (!incoming) return existing;
     if (!existing) return incoming;
     var totalDur = existing.duration + incoming.duration;
     var w =
       (existing.focusScore * existing.duration + incoming.focusScore * incoming.duration) / totalDur;
-    return {
+    var mergedCurve = mergeCurves(existing.curve, incoming.curve, existing.duration);
+    var out = {
       start: earlierStart(existing.start, incoming.start),
       duration: totalDur,
       focusScore: Math.round(w * 10) / 10,
       distractions: existing.distractions + incoming.distractions,
     };
+    if (mergedCurve && mergedCurve.length >= 2) out.curve = mergedCurve;
+    return out;
   }
 
   /**
@@ -61,6 +86,9 @@
       focusScore: detail.focusScore,
       distractions: detail.distractions | 0,
     };
+    if (detail.curve && detail.curve.length >= 2) {
+      rec.curve = detail.curve;
+    }
     user[detail.dateKey] = mergeDay(user[detail.dateKey], rec);
     save(user);
   }
