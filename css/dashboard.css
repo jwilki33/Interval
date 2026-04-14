@@ -1,5 +1,11 @@
 /* Dashboard — three-column launcher (fills space below header) */
 
+.page-dashboard {
+  --font-ui: 0.9375rem;
+  --font-caption: 0.875rem;
+  font-size: var(--font-ui);
+}
+
 .main--dashboard {
   flex: 1;
   min-height: 0;
