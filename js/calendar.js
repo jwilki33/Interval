@@ -30,6 +30,9 @@
 
   var SESSIONS = {};
 
+  /** Last options passed to IntervalStabilityChart.renderHistory (for expanded view). */
+  var lastCurveExpandState = null;
+
   // ─── State ────────────────────────────────────────────────────────────────────
   var view = "month";
   var cursor = new Date(2026, 3, 1); // April 2026
@@ -432,6 +435,7 @@
     if (!el) return;
 
     if (!key) {
+      lastCurveExpandState = null;
       el.innerHTML = '<div class="cal-detail-empty"><span>Select a day<br>to view details</span></div>';
       return;
     }
@@ -439,6 +443,7 @@
     var d0 = new Date(key + "T00:00:00");
 
     if (!SESSIONS[key]) {
+      lastCurveExpandState = null;
       el.innerHTML =
         '<div class="cal-detail cal-detail--empty-day">'
         + '<div class="cal-detail__date">'
@@ -485,7 +490,12 @@
       + "</div>"
 
       + '<div class="cal-detail__chart-block">'
+      + '<div class="cal-detail__chart-head">'
       + '<span class="cal-detail__dist-title">Stability curve</span>'
+      + '<button type="button" class="cal-curve-expand-btn" id="cal-curve-expand-btn" aria-haspopup="dialog" aria-controls="cal-curve-expand-dialog">'
+      + "Expand"
+      + "</button>"
+      + "</div>"
       + '<p class="cal-detail__chart-note">' + noteText + "</p>"
       + '<div class="cal-stability-chart-wrap">'
       + '<svg id="cal-stability-chart" class="cal-stability-chart" viewBox="0 0 600 280" role="img" aria-label="Stability curve for this session"></svg>'
@@ -502,13 +512,40 @@
       + "</div>";
 
     var pts = getCurvePointsForSession(s, key);
+    var sessionStart = parseStartOnDate(key, s.start);
+    lastCurveExpandState = {
+      dataPoints: pts,
+      durationSec: s.duration,
+      sessionStart: sessionStart,
+    };
     var svg = document.getElementById("cal-stability-chart");
     if (window.IntervalStabilityChart && typeof window.IntervalStabilityChart.renderHistory === "function" && svg) {
-      window.IntervalStabilityChart.renderHistory(svg, {
-        dataPoints: pts,
-        durationSec: s.duration,
-        sessionStart: parseStartOnDate(key, s.start),
+      window.IntervalStabilityChart.renderHistory(svg, lastCurveExpandState);
+    }
+
+    var expandBtn = document.getElementById("cal-curve-expand-btn");
+    if (expandBtn) {
+      expandBtn.addEventListener("click", function () {
+        openCurveExpandDialog();
       });
+    }
+  }
+
+  function openCurveExpandDialog() {
+    if (!lastCurveExpandState || !lastCurveExpandState.dataPoints || lastCurveExpandState.dataPoints.length < 2) {
+      return;
+    }
+    var dlg = document.getElementById("cal-curve-expand-dialog");
+    var svgEx = document.getElementById("cal-stability-chart-expanded");
+    if (!dlg || !svgEx) return;
+    if (
+      window.IntervalStabilityChart &&
+      typeof window.IntervalStabilityChart.renderHistory === "function"
+    ) {
+      window.IntervalStabilityChart.renderHistory(svgEx, lastCurveExpandState);
+    }
+    if (typeof dlg.showModal === "function") {
+      dlg.showModal();
     }
   }
 
@@ -663,6 +700,14 @@
 
     document.getElementById("cal-prev").addEventListener("click", function () { navigate(-1); });
     document.getElementById("cal-next").addEventListener("click", function () { navigate(1); });
+
+    var curveDlg = document.getElementById("cal-curve-expand-dialog");
+    var curveClose = document.getElementById("cal-curve-expand-close");
+    if (curveDlg && curveClose) {
+      curveClose.addEventListener("click", function () {
+        curveDlg.close();
+      });
+    }
 
     window.addEventListener("interval-settings-change", function () {
       render();

@@ -600,8 +600,42 @@
   gap: 0.35rem;
 }
 
-.cal-detail__chart-block .cal-detail__dist-title {
+.cal-detail__chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cal-detail__chart-head .cal-detail__dist-title {
   margin-bottom: 0;
+}
+
+.cal-curve-expand-btn {
+  flex-shrink: 0;
+  font-size: 0.6375rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--surface-elevated);
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.cal-curve-expand-btn:hover {
+  border-color: var(--text-muted);
+  background: var(--surface);
+}
+
+.cal-curve-expand-btn:focus-visible {
+  outline: 2px solid var(--deep);
+  outline-offset: 2px;
 }
 
 .cal-detail__chart-note {
@@ -634,6 +668,92 @@
   margin: 0;
   font-size: 0.8125rem;
   color: var(--text-muted);
+}
+
+/* Expanded stability curve (modal) */
+.cal-curve-dialog {
+  max-width: min(920px, calc(100vw - 1.5rem));
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+.cal-curve-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.cal-curve-dialog__inner {
+  padding: 1rem 1rem 1.1rem;
+}
+
+.cal-curve-dialog__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.cal-curve-dialog__title {
+  margin: 0;
+  font-size: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.cal-curve-dialog__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  margin: -0.2rem -0.2rem 0 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-card);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.12s ease, background 0.12s ease;
+}
+
+.cal-curve-dialog__close:hover {
+  color: var(--text);
+  background: var(--surface-elevated);
+}
+
+.cal-curve-dialog__close:focus-visible {
+  outline: 2px solid var(--deep);
+  outline-offset: 2px;
+}
+
+.cal-curve-dialog__chart-wrap {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--bg);
+  overflow: auto;
+  padding: 0.65rem 0.5rem;
+  max-height: min(58vh, 520px);
+}
+
+.cal-stability-chart--expanded {
+  width: 100%;
+  min-width: 560px;
+  height: auto;
+  display: block;
+  vertical-align: middle;
+}
+
+@media (max-width: 640px) {
+  .cal-stability-chart--expanded {
+    min-width: 0;
+  }
 }
 
 /* ——— Responsive ——— */

@@ -205,6 +205,29 @@
         </div>
       </div>
     </div>
+
+    <dialog id="cal-curve-expand-dialog" class="cal-curve-dialog" aria-labelledby="cal-curve-expand-title">
+      <div class="cal-curve-dialog__inner">
+        <div class="cal-curve-dialog__head">
+          <h3 class="cal-curve-dialog__title" id="cal-curve-expand-title">Stability curve</h3>
+          <button type="button" class="cal-curve-dialog__close" id="cal-curve-expand-close" aria-label="Close expanded chart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="cal-curve-dialog__chart-wrap">
+          <svg
+            id="cal-stability-chart-expanded"
+            class="cal-stability-chart cal-stability-chart--expanded"
+            viewBox="0 0 600 280"
+            role="img"
+            aria-label="Stability curve, large view"
+          ></svg>
+        </div>
+      </div>
+    </dialog>
+
     <script src="js/profile.js"></script>
     <script src="js/behavior-tracking.js" defer></script>
     <script src="js/theme.js" defer></script>
