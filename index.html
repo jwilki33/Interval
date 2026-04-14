@@ -117,16 +117,16 @@
           <h1 class="main__title">Live Session</h1>
           <div class="main__header-spacer"></div>
           <div class="header-actions">
-            <button type="button" class="btn-icon" aria-label="Pause session">
+            <button type="button" class="btn-icon" id="session-pause-btn" aria-label="Pause session" disabled>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <rect x="5" y="4" width="5" height="16" rx="1" />
                 <rect x="14" y="4" width="5" height="16" rx="1" />
               </svg>
             </button>
-            <button type="button" class="btn-primary">End Session</button>
+            <button type="button" class="btn-primary" id="session-toggle-btn">Start Session</button>
           </div>
           <div class="header-meta">
-            <span class="pill">Today (03.26.26)</span>
+            <span class="pill" id="today-date-pill">Today</span>
             <span class="pill">
               <span class="pill__dot" aria-hidden="true"></span>
               <span class="pill__time" id="session-timer">00:00:00</span>
