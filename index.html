@@ -128,28 +128,9 @@
 
           <section class="card cell-distraction" aria-labelledby="distraction-heading">
             <h2 class="card__title" id="distraction-heading">Distraction Log</h2>
-            <ul class="distraction-list">
-              <li class="distraction-list__item">
-                <svg class="distraction-list__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <path d="M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V5a2 2 0 012-2z" />
-                </svg>
-                Phone
-              </li>
-              <li class="distraction-list__item">
-                <svg class="distraction-list__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <rect x="3" y="3" width="18" height="18" rx="2" />
-                  <path d="M8 12l3 3 5-6" />
-                </svg>
-                Browser Drift
-              </li>
-              <li class="distraction-list__item">
-                <svg class="distraction-list__icon" viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M12 2C8.5 2 6 4.7 6 8c0 5 6 12 6 12s6-7 6-12c0-3.3-2.5-6-6-6zm0 9a3 3 0 110-6 3 3 0 010 6z"
-                  />
-                </svg>
-                Environment
-              </li>
+            <p class="card__hint" id="distraction-mode-hint">Reflective mode: you record what pulled you away.</p>
+            <ul id="distraction-log" class="distraction-list" aria-live="polite" aria-relevant="additions">
+              <li class="distraction-list__empty" id="distraction-log-empty">No distractions logged yet.</li>
             </ul>
           </section>
 
@@ -176,59 +157,106 @@
             <div class="summary-lines">
               <div class="summary-lines__row">
                 <span class="summary-lines__label">Duration</span>
-                <span class="summary-lines__value">0:00</span>
+                <span class="summary-lines__value" id="summary-duration">0:00</span>
               </div>
               <div class="summary-lines__row">
                 <span class="summary-lines__label">Focus Score</span>
-                <span class="summary-lines__value">3.3 / 5</span>
+                <span class="summary-lines__value" id="summary-focus-score">— / 5</span>
               </div>
               <div class="summary-lines__row">
                 <span class="summary-lines__label">Distractions</span>
-                <span class="summary-lines__value">3</span>
+                <span class="summary-lines__value" id="summary-distractions">0</span>
               </div>
             </div>
           </section>
 
           <section class="card cell-distribution" aria-labelledby="distribution-heading">
             <h2 class="card__title" id="distribution-heading">Focus Distribution</h2>
-            <div class="distribution">
+            <div class="distribution" id="focus-distribution">
               <div class="distribution__row">
                 <span class="distribution__label">Deep</span>
                 <div class="distribution__track">
-                  <div class="distribution__fill distribution__fill--deep" style="width: 56%"></div>
+                  <div class="distribution__fill distribution__fill--deep" id="dist-fill-deep" style="width: 0%"></div>
                 </div>
-                <span class="distribution__time">28 min</span>
+                <span class="distribution__time" id="dist-time-deep">0:00</span>
               </div>
               <div class="distribution__row">
                 <span class="distribution__label">Focused</span>
                 <div class="distribution__track">
-                  <div class="distribution__fill distribution__fill--focused" style="width: 14%"></div>
+                  <div class="distribution__fill distribution__fill--focused" id="dist-fill-focused" style="width: 0%"></div>
                 </div>
-                <span class="distribution__time">7 min</span>
+                <span class="distribution__time" id="dist-time-focused">0:00</span>
               </div>
               <div class="distribution__row">
                 <span class="distribution__label">Neutral</span>
                 <div class="distribution__track">
-                  <div class="distribution__fill distribution__fill--neutral" style="width: 24%"></div>
+                  <div class="distribution__fill distribution__fill--neutral" id="dist-fill-neutral" style="width: 0%"></div>
                 </div>
-                <span class="distribution__time">12 min</span>
+                <span class="distribution__time" id="dist-time-neutral">0:00</span>
               </div>
               <div class="distribution__row">
                 <span class="distribution__label">Distracted</span>
                 <div class="distribution__track">
-                  <div class="distribution__fill distribution__fill--distracted" style="width: 10%"></div>
+                  <div class="distribution__fill distribution__fill--distracted" id="dist-fill-distracted" style="width: 0%"></div>
                 </div>
-                <span class="distribution__time">5 min</span>
+                <span class="distribution__time" id="dist-time-distracted">0:00</span>
               </div>
             </div>
           </section>
 
-          <section class="card cell-friction" aria-label="Report friction">
-            <button type="button" class="btn-friction">Friction Flag</button>
+          <section class="card cell-friction" aria-labelledby="friction-heading">
+            <h2 class="card__title card__title--sr-only" id="friction-heading">Report friction</h2>
+            <button
+              type="button"
+              class="btn-friction"
+              id="friction-flag-btn"
+              aria-haspopup="dialog"
+              aria-controls="friction-dialog"
+              disabled
+            >
+              Friction Flag
+            </button>
           </section>
         </div>
       </div>
     </div>
+
+    <dialog id="friction-dialog" class="friction-dialog" aria-labelledby="friction-dialog-title">
+      <div class="friction-dialog__inner">
+        <h3 class="friction-dialog__title" id="friction-dialog-title">What pulled you away?</h3>
+        <p class="friction-dialog__hint">Choose one. The stability curve and summary update from your choice.</p>
+        <div class="friction-dialog__options">
+          <button type="button" class="friction-option" data-friction-kind="phone">
+            <span class="friction-option__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V5a2 2 0 012-2z" />
+              </svg>
+            </span>
+            <span class="friction-option__label">Phone</span>
+          </button>
+          <button type="button" class="friction-option" data-friction-kind="browser">
+            <span class="friction-option__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M8 12l3 3 5-6" />
+              </svg>
+            </span>
+            <span class="friction-option__label">Browser drift</span>
+          </button>
+          <button type="button" class="friction-option" data-friction-kind="environment">
+            <span class="friction-option__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 2C8.5 2 6 4.7 6 8c0 5 6 12 6 12s6-7 6-12c0-3.3-2.5-6-6-6zm0 9a3 3 0 110-6 3 3 0 010 6z"
+                />
+              </svg>
+            </span>
+            <span class="friction-option__label">Environmental distractions</span>
+          </button>
+        </div>
+        <button type="button" class="btn-secondary friction-dialog__cancel" id="friction-dialog-cancel">Cancel</button>
+      </div>
+    </dialog>
     <script src="js/behavior-tracking.js" defer></script>
     <script src="js/theme.js" defer></script>
     <script src="js/live-session.js" defer></script>

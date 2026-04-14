@@ -392,6 +392,25 @@ html[data-theme="light"] .theme-switch[aria-checked="false"] .theme-switch__knob
   text-transform: none;
 }
 
+.card__title--sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.card__hint {
+  margin: -0.35rem 0 0.65rem;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
 /* Grid placement */
 .cell-stability {
   grid-column: 1 / 3;
@@ -419,6 +438,7 @@ html[data-theme="light"] .theme-switch[aria-checked="false"] .theme-switch__knob
 }
 
 .cell-friction {
+  position: relative;
   grid-column: 3;
   grid-row: 3;
 }
@@ -484,7 +504,7 @@ html[data-theme="light"] .theme-switch[aria-checked="false"] .theme-switch__knob
 
 .distraction-list__item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.65rem;
   font-size: 0.8125rem;
 }
@@ -494,6 +514,33 @@ html[data-theme="light"] .theme-switch[aria-checked="false"] .theme-switch__knob
   height: 22px;
   flex-shrink: 0;
   color: var(--distracted);
+  margin-top: 0.1rem;
+}
+
+.distraction-list__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.distraction-list__label {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.distraction-list__time {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.distraction-list__empty {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0 0;
 }
 
 /* Focus state legend */
@@ -632,6 +679,120 @@ html[data-theme="light"] .theme-switch[aria-checked="false"] .theme-switch__knob
 
 .btn-friction:active {
   transform: scale(0.995);
+}
+
+.btn-friction:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+}
+
+.btn-friction:disabled:hover {
+  filter: none;
+}
+
+/* Friction picker dialog */
+.friction-dialog {
+  max-width: min(400px, calc(100vw - 2rem));
+  padding: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+.friction-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.friction-dialog__inner {
+  padding: 1.1rem 1.15rem 1rem;
+}
+
+.friction-dialog__title {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.friction-dialog__hint {
+  margin: 0 0 1rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.friction-dialog__options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.friction-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  background: var(--surface-elevated, var(--surface));
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.friction-option:hover {
+  border-color: var(--distracted);
+  background: color-mix(in srgb, var(--distracted) 12%, var(--surface));
+}
+
+.friction-option__icon {
+  display: flex;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--distracted) 18%, transparent);
+  color: var(--distracted);
+}
+
+.friction-option__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.friction-option__label {
+  flex: 1;
+  line-height: 1.3;
+}
+
+.friction-dialog__cancel {
+  margin-top: 0.85rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.friction-dialog__cancel:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
 }
 
 @media (max-width: 1100px) {
