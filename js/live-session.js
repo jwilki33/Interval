@@ -5,7 +5,7 @@
   "use strict";
 
   // ─── Session state ────────────────────────────────────────────────────────────
-  var state = "idle"; // "idle" | "running" | "paused"
+  var state = "idle"; // "idle" | "running"
   var sessionStartTime = null;
   var totalSeconds = 0;
   var timerInterval = null;
@@ -172,20 +172,8 @@
   }
 
   // ─── UI helpers ───────────────────────────────────────────────────────────────
-  function pauseIconSvg() {
-    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
-      + '<rect x="5" y="4" width="5" height="16" rx="1"/>'
-      + '<rect x="14" y="4" width="5" height="16" rx="1"/></svg>';
-  }
-
-  function playIconSvg() {
-    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
-      + '<path d="M6 4l14 8-14 8V4z"/></svg>';
-  }
-
   function updateUI() {
     var toggleBtn = document.getElementById("session-toggle-btn");
-    var pauseBtn = document.getElementById("session-pause-btn");
     var pillDot = document.querySelector(".pill__dot");
 
     if (toggleBtn) {
@@ -196,14 +184,6 @@
         toggleBtn.textContent = "End Session";
         toggleBtn.classList.add("btn-primary--end");
       }
-    }
-
-    if (pauseBtn) {
-      var isIdle = state === "idle";
-      pauseBtn.disabled = isIdle;
-      pauseBtn.style.opacity = isIdle ? "0.3" : "";
-      pauseBtn.style.pointerEvents = isIdle ? "none" : "";
-      pauseBtn.innerHTML = state === "paused" ? playIconSvg() : pauseIconSvg();
     }
 
     if (pillDot) {
@@ -266,22 +246,6 @@
     buildChart(document.getElementById("stability-chart"));
   }
 
-  function togglePause() {
-    if (state === "idle") return;
-    var svg = document.getElementById("stability-chart");
-    if (state === "running") {
-      state = "paused";
-      clearInterval(timerInterval);
-      clearInterval(chartInterval);
-      timerInterval = null;
-      chartInterval = null;
-    } else if (state === "paused") {
-      state = "running";
-      startChartAndTimer(svg);
-    }
-    updateUI();
-  }
-
   // ─── Init ─────────────────────────────────────────────────────────────────────
   document.addEventListener("DOMContentLoaded", function () {
     updateDatePill();
@@ -295,11 +259,6 @@
         if (state === "idle") startSession();
         else endSession();
       });
-    }
-
-    var pauseBtn = document.getElementById("session-pause-btn");
-    if (pauseBtn) {
-      pauseBtn.addEventListener("click", togglePause);
     }
   });
 })();
