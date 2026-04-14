@@ -1,5 +1,28 @@
 /* Dashboard — three-panel launcher */
 
+.main__header--dashboard {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.dashboard-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 36rem;
+}
+
+.dashboard-motivation {
+  margin: 0;
+  font-size: var(--font-caption);
+  line-height: 1.45;
+  color: var(--text-muted);
+  font-style: italic;
+  letter-spacing: 0.01em;
+  min-height: 2.6em;
+}
+
 .dashboard-tiles {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

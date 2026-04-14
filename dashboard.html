@@ -104,8 +104,11 @@
       </aside>
 
       <div class="main">
-        <header class="main__header">
-          <h1 class="main__title">Dashboard</h1>
+        <header class="main__header main__header--dashboard">
+          <div class="dashboard-intro">
+            <h1 class="main__title">Dashboard</h1>
+            <p id="dashboard-motivation" class="dashboard-motivation" aria-live="polite"></p>
+          </div>
         </header>
 
         <nav class="dashboard-tiles" aria-label="App areas">
@@ -179,5 +182,6 @@
     </div>
     <script src="js/behavior-tracking.js" defer></script>
     <script src="js/theme.js" defer></script>
+    <script src="js/dashboard-motivation.js" defer></script>
   </body>
 </html>
