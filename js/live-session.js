@@ -220,7 +220,7 @@
 
   function startDemoTimer(el) {
     if (!el) return;
-    var totalSeconds = 54 * 60 + 18;
+    var totalSeconds = 0;
     function tick() {
       var h = Math.floor(totalSeconds / 3600);
       var m = Math.floor((totalSeconds % 3600) / 60);
