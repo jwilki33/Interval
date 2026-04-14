@@ -512,6 +512,73 @@
   color: var(--text-muted);
 }
 
+/* Profile page */
+.profile-view-card {
+  max-width: 28rem;
+  align-self: flex-start;
+}
+
+.profile-view-root {
+  font-size: var(--font-caption);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.profile-view__lead {
+  margin: 0 0 1rem;
+}
+
+.profile-view__dl {
+  margin: 0;
+}
+
+.profile-view__row {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.profile-view__row:last-of-type {
+  border-bottom: none;
+}
+
+.profile-view__row dt {
+  margin: 0;
+  font-size: var(--font-caption);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.profile-view__row dd {
+  margin: 0;
+  font-size: var(--font-ui);
+  color: var(--text);
+}
+
+.profile-view__meta {
+  margin: 1rem 0 0;
+  font-size: calc(var(--font-caption) * 0.95);
+  color: var(--text-muted);
+}
+
+.profile-view__edit {
+  font-size: var(--font-caption);
+  color: var(--deep);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.profile-view__edit:hover {
+  filter: brightness(1.1);
+}
+
+.profile-view__cta {
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
 @media (max-width: 1100px) {
   .guide-grid {
     grid-template-columns: 1fr;

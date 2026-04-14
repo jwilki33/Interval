@@ -6,6 +6,16 @@
     var skipBtn = document.getElementById("onboarding-skip");
     if (!form || !window.IntervalProfile) return;
 
+    var existing = IntervalProfile.get();
+    if (existing) {
+      var dn = document.getElementById("profile-display-name");
+      var em = document.getElementById("profile-email");
+      var fc = document.getElementById("profile-focus");
+      if (existing.displayName && dn) dn.value = existing.displayName;
+      if (existing.email && em) em.value = existing.email;
+      if (existing.focus && fc) fc.value = existing.focus;
+    }
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var displayName = (document.getElementById("profile-display-name") || {}).value || "";

@@ -20,14 +20,14 @@
   <body>
     <div class="app">
       <aside class="sidebar" aria-label="Main navigation">
-        <div class="sidebar__brand">
+        <a class="sidebar__brand sidebar__brand--link" id="sidebar-brand-link" href="profile.html" aria-label="Profile">
           <svg class="sidebar__logo" viewBox="0 0 32 32" aria-hidden="true" fill="none">
             <line x1="16" y1="3" x2="16" y2="29" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
             <line x1="27.3" y1="9.5" x2="4.7" y2="22.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
             <line x1="4.7" y1="9.5" x2="27.3" y2="22.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
           </svg>
           <span class="sidebar__title">Interval</span>
-        </div>
+        </a>
         <nav class="sidebar__nav">
           <a class="sidebar__link" href="index.html">
             <svg class="sidebar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -209,8 +209,10 @@
         </div>
       </div>
     </div>
+    <script src="js/profile.js"></script>
     <script src="js/behavior-tracking.js" defer></script>
     <script src="js/theme.js" defer></script>
+    <script src="js/sidebar-brand.js" defer></script>
     <script src="js/guide-goals.js" defer></script>
   </body>
 </html>
