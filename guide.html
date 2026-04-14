@@ -103,20 +103,79 @@
         </div>
       </aside>
 
-      <div class="main">
-        <header class="main__header">
+      <div class="main main--guide">
+        <header class="main__header main__header--guide">
           <h1 class="main__title">Guide</h1>
         </header>
-        <div class="guide-content card">
-          <p class="guide-content__lead">
-            Interval helps you see how focus shifts over time. Use the <strong>Tracker</strong> for live sessions, the
-            <strong>Calendar</strong> for history, and this guide as a quick reference.
-          </p>
-          <ul class="guide-content__list">
-            <li><span class="guide-content__term">Focus bands</span> — Deep, Focused, Neutral, and Distracted match the stability curve and calendar colors.</li>
-            <li><span class="guide-content__term">Reflective mode</span> — You log frictions (phone, browser drift, environment); the curve and summary update from your choices.</li>
-            <li><span class="guide-content__term">Sessions on the calendar</span> — When you end a session, it is saved for the calendar view for that day.</li>
-          </ul>
+
+        <div class="guide-grid" aria-label="Guide sections">
+          <section class="card guide-panel guide-panel--goal" aria-labelledby="guide-goal-heading">
+            <h2 class="guide-panel__title" id="guide-goal-heading">Goal List</h2>
+            <div class="guide-panel__body">
+              <p class="guide-panel__lead">
+                A place to anchor <em>why</em> you’re tracking focus—so sessions feel tied to something concrete.
+              </p>
+              <ul class="guide-panel__list">
+                <li>Finish deep work on one project per day</li>
+                <li>Notice pulls earlier (phone / tabs / noise)</li>
+                <li>Build a honest history in the calendar</li>
+              </ul>
+              <p class="guide-panel__note">Later this can become editable goals or check-ins tied to the tracker.</p>
+            </div>
+          </section>
+
+          <section class="card guide-panel guide-panel--recommendations" aria-labelledby="guide-rec-heading">
+            <h2 class="guide-panel__title" id="guide-rec-heading">Key Recommendations</h2>
+            <div class="guide-panel__body">
+              <ol class="guide-panel__numbered">
+                <li><strong>Start a session</strong> before deep work so the curve and distribution reflect real time.</li>
+                <li><strong>Log friction</strong> when you notice it—reflective mode only works if you name the pull.</li>
+                <li><strong>Glance at the calendar</strong> weekly for patterns, not to judge single days.</li>
+                <li><strong>End sessions cleanly</strong> so each run is saved and shows up on the calendar.</li>
+              </ol>
+            </div>
+          </section>
+
+          <section class="card guide-panel guide-panel--preset" aria-labelledby="guide-preset-heading">
+            <h2 class="guide-panel__title" id="guide-preset-heading">Session Preset</h2>
+            <div class="guide-panel__body">
+              <p>
+                A slot for <strong>how</strong> you want to work—length, intent, or structure—before we wire real controls.
+              </p>
+              <dl class="guide-panel__dl">
+                <dt>Reflective (current)</dt>
+                <dd>Open-ended; you control start/stop and log distractions by hand.</dd>
+                <dt>Future ideas</dt>
+                <dd>Timed pomodoro-style blocks, “deep work only” reminders, or active tracking hints.</dd>
+              </dl>
+            </div>
+          </section>
+
+          <section class="card guide-panel guide-panel--focus" aria-labelledby="guide-focus-heading">
+            <h2 class="guide-panel__title" id="guide-focus-heading">Focus State</h2>
+            <div class="guide-panel__body">
+              <p>Same four bands as the stability curve and calendar tinting—read top to bottom as focus slips.</p>
+              <ul class="guide-panel__legend">
+                <li><span class="guide-panel__swatch guide-panel__swatch--deep"></span> Deep — steady, on-task</li>
+                <li><span class="guide-panel__swatch guide-panel__swatch--focused"></span> Focused — engaged with mild drift</li>
+                <li><span class="guide-panel__swatch guide-panel__swatch--neutral"></span> Neutral — attention is split</li>
+                <li><span class="guide-panel__swatch guide-panel__swatch--distracted"></span> Distracted — pulled away</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="card guide-panel guide-panel--distractions" aria-labelledby="guide-dist-heading">
+            <h2 class="guide-panel__title" id="guide-dist-heading">Distraction Log</h2>
+            <div class="guide-panel__body">
+              <p>
+                In <strong>reflective mode</strong>, the log is built from friction flags: phone, browser drift, or environmental noise.
+              </p>
+              <p>
+                Each entry nudges the stability curve and counts toward session distractions—so the log matches what you actually felt pulled you away.
+              </p>
+              <p class="guide-panel__note">Active tracking (future) could fill this automatically from screen context.</p>
+            </div>
+          </section>
         </div>
       </div>
     </div>
