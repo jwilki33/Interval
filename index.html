@@ -134,24 +134,6 @@
             </ul>
           </section>
 
-          <section class="card cell-focus-legend" aria-labelledby="focus-state-heading">
-            <h2 class="card__title" id="focus-state-heading">Focus State</h2>
-            <div class="legend">
-              <div class="legend__row">
-                <span class="legend__swatch legend__swatch--deep"></span> Deep
-              </div>
-              <div class="legend__row">
-                <span class="legend__swatch legend__swatch--focused"></span> Focused
-              </div>
-              <div class="legend__row">
-                <span class="legend__swatch legend__swatch--neutral"></span> Neutral
-              </div>
-              <div class="legend__row">
-                <span class="legend__swatch legend__swatch--distracted"></span> Distracted
-              </div>
-            </div>
-          </section>
-
           <section class="card cell-session" aria-labelledby="session-summary-heading">
             <h2 class="card__title" id="session-summary-heading">Session Summary</h2>
             <div class="summary-lines">
@@ -167,6 +149,22 @@
                 <span class="summary-lines__label">Distractions</span>
                 <span class="summary-lines__value" id="summary-distractions">0</span>
               </div>
+            </div>
+          </section>
+
+          <section class="card cell-curve-key" aria-labelledby="curve-key-heading">
+            <h2 class="card__title" id="curve-key-heading">Curve key</h2>
+            <p class="card__hint">
+              Segment color matches focus level at that moment, aligned with the chart vertical scale (deep at the top, distracted at the bottom).
+            </p>
+            <div class="curve-key" role="presentation">
+              <div class="curve-key__gradient" aria-hidden="true"></div>
+              <ol class="curve-key__labels" aria-label="Stability curve vertical scale">
+                <li><span class="curve-key__swatch curve-key__swatch--deep"></span> Deep</li>
+                <li><span class="curve-key__swatch curve-key__swatch--focused"></span> Focused</li>
+                <li><span class="curve-key__swatch curve-key__swatch--neutral"></span> Neutral</li>
+                <li><span class="curve-key__swatch curve-key__swatch--distracted"></span> Distracted</li>
+              </ol>
             </div>
           </section>
 
@@ -259,6 +257,7 @@
     </dialog>
     <script src="js/behavior-tracking.js" defer></script>
     <script src="js/theme.js" defer></script>
+    <script src="js/session-calendar.js" defer></script>
     <script src="js/live-session.js" defer></script>
   </body>
 </html>

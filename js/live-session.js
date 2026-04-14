@@ -868,9 +868,39 @@
 
 
 
+  function dateKeyFromDate(d) {
+
+    if (!d) return "";
+
+    return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+
+  }
+
+
+
+  function formatStartHm(d) {
+
+    if (!d) return "09:00";
+
+    return pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+
+  }
+
+
+
   function endSession() {
 
     if (state === "idle") return;
+
+    var endedDur = totalSeconds;
+
+    var endedStart = sessionStartTime;
+
+    var endedFocus = computeFocusScore();
+
+    var endedDist = distractionCount;
+
+
 
     clearInterval(timerInterval);
 
@@ -893,6 +923,42 @@
     bucketSeconds = [0, 0, 0, 0];
 
     distractionCount = 0;
+
+
+
+    if (
+
+      window.IntervalSessionCalendar &&
+
+      typeof window.IntervalSessionCalendar.recordSession === "function" &&
+
+      endedDur > 0 &&
+
+      endedStart
+
+    ) {
+
+      var fs = endedFocus;
+
+      if (fs === null) fs = 0;
+
+      window.IntervalSessionCalendar.recordSession({
+
+        dateKey: dateKeyFromDate(endedStart),
+
+        start: formatStartHm(endedStart),
+
+        duration: endedDur,
+
+        focusScore: fs,
+
+        distractions: endedDist,
+
+      });
+
+    }
+
+
 
     updateUI();
 

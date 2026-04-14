@@ -1,0 +1,88 @@
+/**
+ * Persists completed tracker sessions for the calendar (localStorage).
+ * User entries for a date replace demo data for that date; multiple sessions on the same day aggregate.
+ */
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "interval_session_calendar_v1";
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function save(obj) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+    } catch (e) {
+      /* quota / private mode */
+    }
+  }
+
+  function parseStart(s) {
+    var p = String(s).split(":");
+    if (p.length < 2) return 0;
+    return parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+  }
+
+  function earlierStart(a, b) {
+    return parseStart(a) <= parseStart(b) ? a : b;
+  }
+
+  function mergeDay(existing, incoming) {
+    if (!incoming) return existing;
+    if (!existing) return incoming;
+    var totalDur = existing.duration + incoming.duration;
+    var w =
+      (existing.focusScore * existing.duration + incoming.focusScore * incoming.duration) / totalDur;
+    return {
+      start: earlierStart(existing.start, incoming.start),
+      duration: totalDur,
+      focusScore: Math.round(w * 10) / 10,
+      distractions: existing.distractions + incoming.distractions,
+    };
+  }
+
+  /**
+   * @param {{ dateKey: string, start: string, duration: number, focusScore: number, distractions: number }} detail
+   */
+  function recordSession(detail) {
+    if (!detail || !detail.dateKey || detail.duration < 1) return;
+    if (typeof detail.focusScore !== "number" || isNaN(detail.focusScore)) return;
+    var user = load();
+    var rec = {
+      start: detail.start,
+      duration: Math.floor(detail.duration),
+      focusScore: detail.focusScore,
+      distractions: detail.distractions | 0,
+    };
+    user[detail.dateKey] = mergeDay(user[detail.dateKey], rec);
+    save(user);
+  }
+
+  /**
+   * Demo sessions plus user sessions; user wins per date key (with intra-day merge already applied in storage).
+   */
+  function getMergedSessions(demoSessions) {
+    var user = load();
+    var merged = {};
+    var k;
+    for (k in demoSessions) {
+      if (Object.prototype.hasOwnProperty.call(demoSessions, k)) merged[k] = demoSessions[k];
+    }
+    for (k in user) {
+      if (Object.prototype.hasOwnProperty.call(user, k)) merged[k] = user[k];
+    }
+    return merged;
+  }
+
+  window.IntervalSessionCalendar = {
+    recordSession: recordSession,
+    getMergedSessions: getMergedSessions,
+  };
+})();

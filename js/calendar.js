@@ -8,7 +8,7 @@
   // ─── Demo session data ────────────────────────────────────────────────────────
   // focusScore: 0–5  (higher = better focus)
   // duration: seconds
-  var SESSIONS = {
+  var DEMO_SESSIONS = {
     "2026-03-03": { start: "09:30", duration: 3600, focusScore: 4.3, distractions: 1 },
     "2026-03-06": { start: "10:00", duration: 2700, focusScore: 2.1, distractions: 6 },
     "2026-03-10": { start: "09:15", duration: 4800, focusScore: 4.7, distractions: 0 },
@@ -27,6 +27,8 @@
     "2026-04-10": { start: "09:45", duration: 3300, focusScore: 3.9, distractions: 1 },
     "2026-04-13": { start: "10:00", duration: 1200, focusScore: 2.8, distractions: 4 },
   };
+
+  var SESSIONS = {};
 
   // ─── State ────────────────────────────────────────────────────────────────────
   var view = "month";
@@ -507,6 +509,11 @@
 
   // ─── Init ─────────────────────────────────────────────────────────────────────
   document.addEventListener("DOMContentLoaded", function () {
+    if (window.IntervalSessionCalendar && typeof window.IntervalSessionCalendar.getMergedSessions === "function") {
+      SESSIONS = window.IntervalSessionCalendar.getMergedSessions(DEMO_SESSIONS);
+    } else {
+      SESSIONS = DEMO_SESSIONS;
+    }
     updateDatePill();
     render();
 
