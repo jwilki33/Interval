@@ -1,0 +1,113 @@
+/* Dashboard — three-panel launcher */
+
+.dashboard-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-content: start;
+  flex: 1;
+  min-height: 0;
+}
+
+.dashboard-tile {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.dashboard-tile:hover {
+  border-color: color-mix(in srgb, var(--deep) 45%, var(--border-subtle));
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+}
+
+.dashboard-tile:active {
+  transform: scale(0.995);
+}
+
+.dashboard-tile:focus-visible {
+  outline: 2px solid var(--deep);
+  outline-offset: 2px;
+}
+
+.dashboard-tile__thumb {
+  aspect-ratio: 16 / 10;
+  background: var(--surface-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.25rem;
+}
+
+.dashboard-tile__thumb svg {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  display: block;
+}
+
+.dashboard-tile__body {
+  padding: 1rem 1.1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.dashboard-tile__title {
+  margin: 0;
+  font-size: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.dashboard-tile__desc {
+  margin: 0;
+  font-size: var(--font-caption);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+  .dashboard-tiles {
+    grid-template-columns: 1fr;
+    max-width: 28rem;
+  }
+}
+
+/* Guide page */
+.guide-content {
+  max-width: 40rem;
+  align-self: start;
+}
+
+.guide-content__lead {
+  margin: 0 0 1rem;
+  font-size: var(--font-ui);
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.guide-content__lead strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.guide-content__list {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: var(--font-ui);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.guide-content__term {
+  color: var(--text);
+  font-weight: 500;
+}
