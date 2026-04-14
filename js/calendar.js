@@ -338,13 +338,29 @@
     html += "</div>";
 
     if (session) {
-      var HOUR_START = 7, HOUR_END = 22, SPAN = HOUR_END - HOUR_START;
+      var TIMELINE_HOURS = 6;
       var startParts = session.start.split(":");
       var startHour  = parseInt(startParts[0], 10) + parseInt(startParts[1], 10) / 60;
-      var endHour    = startHour + session.duration / 3600;
+      var durH       = session.duration / 3600;
+      var endHour    = startHour + durH;
+
+      var HOUR_START;
+      var HOUR_END;
+      var SPAN = TIMELINE_HOURS;
+      if (durH >= TIMELINE_HOURS) {
+        HOUR_START = Math.floor(startHour);
+        if (HOUR_START + TIMELINE_HOURS > 24) HOUR_START = 24 - TIMELINE_HOURS;
+        HOUR_END = HOUR_START + TIMELINE_HOURS;
+      } else {
+        var mid = (startHour + endHour) / 2;
+        HOUR_START = Math.round(mid - TIMELINE_HOURS / 2);
+        if (HOUR_START < 0) HOUR_START = 0;
+        if (HOUR_START + TIMELINE_HOURS > 24) HOUR_START = 24 - TIMELINE_HOURS;
+        HOUR_END = HOUR_START + TIMELINE_HOURS;
+      }
 
       var topPct    = (((startHour - HOUR_START) / SPAN) * 100).toFixed(2);
-      var heightPct = ((session.duration / 3600 / SPAN) * 100).toFixed(2);
+      var heightPct = ((durH / SPAN) * 100).toFixed(2);
 
       html += '<div class="cal-timeline">';
       for (var h = HOUR_START; h <= HOUR_END; h++) {
