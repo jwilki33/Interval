@@ -111,16 +111,45 @@
         <div class="guide-grid" aria-label="Guide sections">
           <section class="card guide-panel guide-panel--goal" aria-labelledby="guide-goal-heading">
             <h2 class="guide-panel__title" id="guide-goal-heading">Goal List</h2>
-            <div class="guide-panel__body">
-              <p class="guide-panel__lead">
-                A place to anchor <em>why</em> you’re tracking focus—so sessions feel tied to something concrete.
+            <div class="guide-panel__body guide-panel__body--goals">
+              <p class="goal-form__intro">
+                Log <strong>one personal goal per day</strong>. Choose when you want it done, then tick it off when it’s finished.
               </p>
-              <ul class="guide-panel__list">
-                <li>Finish deep work on one project per day</li>
-                <li>Notice pulls earlier (phone / tabs / noise)</li>
-                <li>Build a honest history in the calendar</li>
-              </ul>
-              <p class="guide-panel__note">Later this can become editable goals or check-ins tied to the tracker.</p>
+
+              <form id="goal-day-form" class="goal-form" autocomplete="off">
+                <label class="goal-form__label" for="goal-input">Today’s goal</label>
+                <input
+                  id="goal-input"
+                  class="goal-form__input"
+                  type="text"
+                  name="goal"
+                  maxlength="280"
+                  required
+                  placeholder="One concrete thing for today…"
+                />
+
+                <fieldset class="goal-form__deadlines">
+                  <legend class="goal-form__legend">Deadline</legend>
+                  <label class="goal-form__radio">
+                    <input type="radio" name="goal-deadline" value="session" checked />
+                    Next session
+                  </label>
+                  <label class="goal-form__radio">
+                    <input type="radio" name="goal-deadline" value="week" />
+                    By end of week
+                  </label>
+                </fieldset>
+
+                <button type="submit" class="btn-primary goal-form__submit">Save today’s goal</button>
+              </form>
+
+              <p id="goal-form-status" class="goal-form__status" hidden></p>
+
+              <div class="goal-list__header">
+                <span class="goal-list__title">Log</span>
+                <span class="goal-list__subtitle">Newest first</span>
+              </div>
+              <ul id="goal-checklist" class="goal-list" aria-label="Daily goals checklist"></ul>
             </div>
           </section>
 
@@ -181,5 +210,6 @@
     </div>
     <script src="js/behavior-tracking.js" defer></script>
     <script src="js/theme.js" defer></script>
+    <script src="js/guide-goals.js" defer></script>
   </body>
 </html>

@@ -295,6 +295,223 @@
   background: var(--distracted);
 }
 
+/* Goal List — daily goal + checklist */
+.guide-panel__body--goals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.goal-form__intro {
+  margin: 0;
+  font-size: var(--font-caption);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.goal-form__intro strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.goal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.goal-form__label {
+  font-size: var(--font-caption);
+  font-weight: 500;
+  color: var(--text);
+}
+
+.goal-form__input {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--font-caption);
+}
+
+.goal-form__input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.goal-form__input:focus {
+  outline: none;
+  border-color: var(--deep);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--deep) 35%, transparent);
+}
+
+.goal-form__deadlines {
+  margin: 0;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--surface-elevated);
+}
+
+.goal-form__legend {
+  padding: 0;
+  margin: 0 0 0.4rem;
+  font-size: calc(var(--font-caption) * 0.95);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.goal-form__radio {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--font-caption);
+  color: var(--text);
+  cursor: pointer;
+  margin-bottom: 0.35rem;
+}
+
+.goal-form__radio:last-child {
+  margin-bottom: 0;
+}
+
+.goal-form__radio input {
+  accent-color: var(--deep);
+}
+
+.goal-form__submit {
+  align-self: flex-start;
+  margin-top: 0.15rem;
+}
+
+.goal-form__status {
+  margin: 0;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--deep) 12%, var(--surface));
+  font-size: var(--font-caption);
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.goal-list__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.goal-list__title {
+  font-size: var(--font-caption);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.goal-list__subtitle {
+  font-size: calc(var(--font-caption) * 0.92);
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.goal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.goal-list__empty {
+  margin: 0;
+  padding: 0.5rem 0;
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.goal-list__item {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--surface-elevated);
+}
+
+.goal-list__item--done .goal-list__text {
+  text-decoration: line-through;
+  opacity: 0.8;
+  color: var(--text-muted);
+}
+
+.goal-list__checkbox {
+  margin-top: 0.2rem;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  accent-color: var(--deep);
+  cursor: pointer;
+}
+
+.goal-list__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.goal-list__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+}
+
+.goal-list__date {
+  font-size: calc(var(--font-caption) * 0.92);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.goal-list__badge {
+  font-size: calc(var(--font-caption) * 0.88);
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.goal-list__badge--session {
+  border-color: color-mix(in srgb, var(--focused) 45%, var(--border-subtle));
+  color: var(--focused);
+}
+
+.goal-list__badge--week {
+  border-color: color-mix(in srgb, var(--neutral) 45%, var(--border-subtle));
+  color: var(--neutral);
+}
+
+.goal-list__text {
+  margin: 0;
+  font-size: var(--font-caption);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
 @media (max-width: 1100px) {
   .guide-grid {
     grid-template-columns: 1fr;
