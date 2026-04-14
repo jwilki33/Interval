@@ -53,19 +53,5 @@
       });
     }
 
-    var settingsBtn = document.getElementById("sidebar-settings-toggle");
-    var panel = document.getElementById("sidebar-settings-panel");
-    if (settingsBtn && panel) {
-      settingsBtn.addEventListener("click", function () {
-        var open = panel.hasAttribute("hidden");
-        if (open) {
-          panel.removeAttribute("hidden");
-          settingsBtn.setAttribute("aria-expanded", "true");
-        } else {
-          panel.setAttribute("hidden", "");
-          settingsBtn.setAttribute("aria-expanded", "false");
-        }
-      });
-    }
   });
 })();

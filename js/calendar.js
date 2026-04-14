@@ -40,8 +40,20 @@
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
   ];
-  var DAYS_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  var DAYS_LONG  = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  var DAYS_LONG = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  function weekStartsSunday() {
+    if (window.IntervalAppSettings && typeof window.IntervalAppSettings.getWeekStartsSunday === "function") {
+      return window.IntervalAppSettings.getWeekStartsSunday();
+    }
+    return document.documentElement.getAttribute("data-week-start") === "sunday";
+  }
+
+  function dayLabelsShort() {
+    return weekStartsSunday()
+      ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+      : ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  }
 
   // ─── Color helpers ────────────────────────────────────────────────────────────
   // Focus score 0–5 maps to: distracted (red) → neutral (orange) → focused (yellow) → deep (green)
@@ -106,7 +118,17 @@
     return m + "m";
   }
 
+  function use24hClock() {
+    if (window.IntervalAppSettings && typeof window.IntervalAppSettings.use24hClock === "function") {
+      return window.IntervalAppSettings.use24hClock();
+    }
+    return document.documentElement.getAttribute("data-clock") === "24";
+  }
+
   function formatStart(timeStr) {
+    if (use24hClock()) {
+      return timeStr;
+    }
     var parts = timeStr.split(":");
     var h = parseInt(parts[0], 10);
     var m = parts[1];
@@ -116,12 +138,15 @@
   }
 
   // ─── Helpers ──────────────────────────────────────────────────────────────────
-  // Get Monday of the week containing `d`
   function getWeekStart(d) {
     var ws = new Date(d);
     var day = ws.getDay(); // 0 = Sunday
-    var diff = day === 0 ? -6 : 1 - day;
-    ws.setDate(ws.getDate() + diff);
+    if (weekStartsSunday()) {
+      ws.setDate(ws.getDate() - day);
+    } else {
+      var diff = day === 0 ? -6 : 1 - day;
+      ws.setDate(ws.getDate() + diff);
+    }
     ws.setHours(0, 0, 0, 0);
     return ws;
   }
@@ -215,7 +240,10 @@
   function renderMonth() {
     var y = cursor.getFullYear(), mo = cursor.getMonth();
     var firstDow = new Date(y, mo, 1).getDay(); // 0=Sun
-    var startOffset = firstDow === 0 ? 6 : firstDow - 1; // shift to Mon=0
+    var startOffset = weekStartsSunday()
+      ? firstDow
+      : (firstDow === 0 ? 6 : firstDow - 1);
+    var labels = dayLabelsShort();
     var daysInMonth = new Date(y, mo + 1, 0).getDate();
     var daysInPrev  = new Date(y, mo, 0).getDate();
     var todayKey    = dateKey(new Date());
@@ -223,7 +251,7 @@
     var totalCells  = Math.ceil((startOffset + daysInMonth) / 7) * 7;
 
     var html = '<div class="cal-month"><div class="cal-month__weekdays">';
-    DAYS_SHORT.forEach(function (d) {
+    labels.forEach(function (d) {
       html += '<div class="cal-month__weekday">' + d + "</div>";
     });
     html += '</div><div class="cal-month__grid" id="cal-month-grid">';
@@ -278,8 +306,9 @@
   // ─── Week view ────────────────────────────────────────────────────────────────
   function renderWeek() {
     var ws = getWeekStart(cursor);
-    var todayKey    = dateKey(new Date());
+    var todayKey = dateKey(new Date());
     var selectedKey = selectedDate ? dateKey(selectedDate) : null;
+    var wdayLabels = dayLabelsShort();
     var html = '<div class="cal-week">';
 
     for (var i = 0; i < 7; i++) {
@@ -296,7 +325,7 @@
 
       html += '<div class="' + cls + '" data-date="' + k + '">';
       html += '<div class="cal-week__day-label">';
-      html += '<span class="cal-week__day-name">' + DAYS_SHORT[i] + "</span>";
+      html += '<span class="cal-week__day-name">' + wdayLabels[i] + "</span>";
       html += '<span class="cal-week__day-num">' + d.getDate() + "</span>";
       html += "</div>";
 
@@ -324,15 +353,14 @@
 
   // ─── Day view ─────────────────────────────────────────────────────────────────
   function renderDay() {
-    var k       = dateKey(cursor);
+    var k = dateKey(cursor);
     var session = SESSIONS[k];
     var isToday = k === dateKey(new Date());
-    var dayIdx  = (cursor.getDay() + 6) % 7; // 0=Mon
 
     var html = '<div class="cal-day-view">';
     html += '<div class="cal-day-view__header">';
     html += '<span class="cal-day-view__date-label">'
-          + DAYS_LONG[dayIdx] + ", " + MONTHS[cursor.getMonth()] + " " + cursor.getDate()
+          + DAYS_LONG[cursor.getDay()] + ", " + MONTHS[cursor.getMonth()] + " " + cursor.getDate()
           + "</span>";
     if (isToday) html += '<span class="cal-day-view__today-badge">Today</span>';
     html += "</div>";
@@ -365,10 +393,16 @@
       html += '<div class="cal-timeline">';
       for (var h = HOUR_START; h <= HOUR_END; h++) {
         var yPct = (((h - HOUR_START) / SPAN) * 100).toFixed(2);
-        var ampm = h < 12 ? "AM" : "PM";
-        var h12  = h % 12 || 12;
+        var hourLabel;
+        if (use24hClock()) {
+          hourLabel = pad2(h) + ":00";
+        } else {
+          var ampm = h < 12 ? "AM" : "PM";
+          var h12 = h % 12 || 12;
+          hourLabel = h12 + ":00 " + ampm;
+        }
         html += '<div class="cal-timeline__hour" style="top:' + yPct + '%">';
-        html += '<span class="cal-timeline__hour-label">' + h12 + ":00</span>";
+        html += '<span class="cal-timeline__hour-label">' + hourLabel + "</span>";
         html += '<div class="cal-timeline__hour-line"></div>';
         html += "</div>";
       }
@@ -415,7 +449,7 @@
     el.innerHTML =
       '<div class="cal-detail">'
       + '<div class="cal-detail__date">'
-        + DAYS_LONG[(d.getDay() + 6) % 7] + ", "
+        + DAYS_LONG[d.getDay()] + ", "
         + MONTHS[d.getMonth()].slice(0, 3) + " " + d.getDate() + " " + d.getFullYear()
       + "</div>"
 
@@ -548,5 +582,13 @@
 
     document.getElementById("cal-prev").addEventListener("click", function () { navigate(-1); });
     document.getElementById("cal-next").addEventListener("click", function () { navigate(1); });
+
+    window.addEventListener("interval-settings-change", function () {
+      render();
+      if (selectedDate) {
+        var k = dateKey(selectedDate);
+        renderDetail(SESSIONS[k] ? k : null);
+      }
+    });
   });
 })();

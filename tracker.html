@@ -11,6 +11,16 @@
           if (localStorage.getItem("interval_theme") === "light") {
             document.documentElement.setAttribute("data-theme", "light");
           }
+          var ts = localStorage.getItem("interval_text_scale");
+          if (ts === "sm" || ts === "lg") {
+            document.documentElement.setAttribute("data-text-scale", ts);
+          }
+          var motion = localStorage.getItem("interval_motion");
+          var reduce = false;
+          if (motion === "reduce") reduce = true;
+          else if (motion === "full") reduce = false;
+          else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) reduce = true;
+          if (reduce) document.documentElement.setAttribute("data-reduced-motion", "reduce");
         } catch (e) {}
       })();
     </script>
@@ -91,9 +101,45 @@
                   </button>
                 </div>
               </div>
+              <div class="settings-field">
+                <label class="settings-field__label" for="setting-text-scale">Text size</label>
+                <select class="settings-select" id="setting-text-scale" aria-label="Text size">
+                  <option value="sm">Small</option>
+                  <option value="md">Default</option>
+                  <option value="lg">Large</option>
+                </select>
+              </div>
+              <div class="settings-field">
+                <label class="settings-field__label" for="setting-clock">Time</label>
+                <select class="settings-select" id="setting-clock" aria-label="Time format">
+                  <option value="12">12-hour</option>
+                  <option value="24">24-hour</option>
+                </select>
+              </div>
+              <div class="settings-field">
+                <label class="settings-field__label" for="setting-week-start">Week starts</label>
+                <select class="settings-select" id="setting-week-start" aria-label="First day of week">
+                  <option value="monday">Monday</option>
+                  <option value="sunday">Sunday</option>
+                </select>
+              </div>
+              <div class="settings-field">
+                <label class="settings-field__label" for="setting-motion">Motion</label>
+                <select class="settings-select" id="setting-motion" aria-label="Animation preference">
+                  <option value="system">Match system</option>
+                  <option value="reduce">Reduce motion</option>
+                  <option value="full">Full motion</option>
+                </select>
+              </div>
+              <div class="settings-field">
+                <span class="settings-field__label">Data</span>
+                <button type="button" class="settings-btn" id="setting-export-sessions">
+                  Download session backup
+                </button>
+              </div>
             </div>
           </div>
-          <a class="sidebar__link" href="#">
+          <a class="sidebar__link" href="guide.html">
             <svg class="sidebar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10" />
               <path d="M12 16v-4M12 8h.01" />
@@ -259,6 +305,7 @@
     <script src="js/profile.js"></script>
     <script src="js/behavior-tracking.js" defer></script>
     <script src="js/theme.js" defer></script>
+    <script src="js/app-settings.js" defer></script>
     <script src="js/sidebar-brand.js" defer></script>
     <script src="js/session-calendar.js" defer></script>
     <script src="js/live-session.js" defer></script>

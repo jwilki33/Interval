@@ -81,8 +81,22 @@
     return merged;
   }
 
+  function exportJsonFile() {
+    var obj = load();
+    var blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "interval-session-backup.json";
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+  }
+
   window.IntervalSessionCalendar = {
     recordSession: recordSession,
     getMergedSessions: getMergedSessions,
+    exportJsonFile: exportJsonFile,
   };
 })();

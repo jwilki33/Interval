@@ -212,6 +212,10 @@
 
   function clockLabel(date) {
 
+    if (document.documentElement.getAttribute("data-clock") === "24") {
+      return pad2(date.getHours()) + ":" + pad2(date.getMinutes());
+    }
+
     var h = date.getHours() % 12 || 12;
 
     return h + ":" + pad2(date.getMinutes());

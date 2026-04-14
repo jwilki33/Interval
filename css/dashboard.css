@@ -1,8 +1,8 @@
 /* Dashboard — three-column launcher (fills space below header) */
 
 .page-dashboard {
-  --font-ui: 0.9375rem;
-  --font-caption: 0.875rem;
+  --font-ui: calc(0.9375rem * var(--text-scale-multiplier));
+  --font-caption: calc(0.875rem * var(--text-scale-multiplier));
   font-size: var(--font-ui);
 }
 

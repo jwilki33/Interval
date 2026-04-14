@@ -23,8 +23,17 @@ html[data-theme="dark"] {
   --font-sans: "Rinter", system-ui, sans-serif;
   --font-mono: "Founders Grotesk Mono", ui-monospace, monospace;
   /* Tracker: one body size for labels + values, one for captions */
-  --font-ui: 0.8125rem;
-  --font-caption: 0.75rem;
+  --text-scale-multiplier: 1;
+  --font-ui: calc(0.8125rem * var(--text-scale-multiplier));
+  --font-caption: calc(0.75rem * var(--text-scale-multiplier));
+}
+
+html[data-text-scale="sm"] {
+  --text-scale-multiplier: 0.92;
+}
+
+html[data-text-scale="lg"] {
+  --text-scale-multiplier: 1.1;
 }
 
 html[data-theme="light"] {
@@ -206,6 +215,8 @@ a.sidebar__brand--link:focus-visible {
   border-radius: var(--radius-card);
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
+  max-height: min(70vh, 22rem);
+  overflow-y: auto;
 }
 
 .settings-field {
@@ -276,6 +287,61 @@ a.sidebar__brand--link:focus-visible {
 
 html[data-theme="light"] .theme-switch[aria-checked="false"] .theme-switch__knob {
   background: #ffffff;
+}
+
+.sidebar__settings-panel .settings-field:not(:first-child) {
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.settings-select {
+  width: 100%;
+  max-width: 100%;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.settings-select:focus-visible {
+  outline: 2px solid var(--deep);
+  outline-offset: 1px;
+}
+
+.settings-btn {
+  display: block;
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.4rem 0.55rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.settings-btn:hover {
+  background: var(--surface-elevated);
+  border-color: var(--text-muted);
+}
+
+.settings-btn:focus-visible {
+  outline: 2px solid var(--deep);
+  outline-offset: 1px;
+}
+
+html[data-reduced-motion="reduce"] *,
+html[data-reduced-motion="reduce"] *::before,
+html[data-reduced-motion="reduce"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
 }
 
 /* ——— Main ——— */
