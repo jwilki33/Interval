@@ -84,8 +84,7 @@
       gt.setAttribute("y1", yy);
       gt.setAttribute("x2", padL + chartW);
       gt.setAttribute("y2", yy);
-      gt.setAttribute("class", "stability-chart__grid");
-      if (ly === 2) gt.setAttribute("stroke", "#444");
+      gt.setAttribute("class", "stability-chart__grid" + (ly === 2 ? " stability-chart__grid--mid" : ""));
       svg.appendChild(gt);
 
       var lbl = document.createElementNS(NS, "text");

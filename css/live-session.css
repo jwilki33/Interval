@@ -2,21 +2,47 @@
 
 @import url("./fonts.css");
 
-:root {
+:root,
+html[data-theme="dark"] {
   --bg: #000000;
   --surface: #1a1a1a;
   --surface-elevated: #222222;
   --border-subtle: #2a2a2a;
   --text: #ffffff;
   --text-muted: #9a9a9a;
+  --text-on-deep: #0a0a0a;
   --deep: #00c853;
   --focused: #ffd600;
   --neutral: #ff9100;
   --distracted: #d50000;
+  --chart-grid-stroke: #333333;
+  --chart-grid-mid: #444444;
+  --dist-track-bg: #0d0d0d;
+  --sidebar-active-bg: rgba(0, 200, 83, 0.18);
+  --sidebar-active-ring: rgba(0, 200, 83, 0.25);
   --sidebar-width: 240px;
   --radius-card: 8px;
   --font-sans: "Rinter", system-ui, sans-serif;
   --font-mono: "Founders Grotesk Mono", ui-monospace, monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #f2f2f2;
+  --surface: #ffffff;
+  --surface-elevated: #ebebeb;
+  --border-subtle: #e0e0e0;
+  --text: #141414;
+  --text-muted: #616161;
+  --text-on-deep: #0a0a0a;
+  --deep: #00a344;
+  --focused: #c9a000;
+  --neutral: #e65100;
+  --distracted: #c62828;
+  --chart-grid-stroke: #d4d4d4;
+  --chart-grid-mid: #b8b8b8;
+  --dist-track-bg: #eaeaea;
+  --sidebar-active-bg: rgba(0, 163, 68, 0.12);
+  --sidebar-active-ring: rgba(0, 163, 68, 0.35);
 }
 
 *,
@@ -110,9 +136,9 @@ button {
 }
 
 .sidebar__link--active {
-  background: rgba(0, 200, 83, 0.18);
+  background: var(--sidebar-active-bg);
   color: var(--deep);
-  box-shadow: 0 0 0 1px rgba(0, 200, 83, 0.25);
+  box-shadow: 0 0 0 1px var(--sidebar-active-ring);
 }
 
 .sidebar__icon {
@@ -132,6 +158,99 @@ button {
   gap: 0.35rem;
   padding-top: 1rem;
   border-top: 1px solid var(--border-subtle);
+}
+
+.sidebar__settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sidebar__settings-trigger {
+  width: 100%;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sidebar__settings-panel {
+  padding: 0.5rem 0.65rem 0.75rem;
+  margin: 0 0 0.15rem;
+  border-radius: var(--radius-card);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-field__label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.theme-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.theme-switch-row__text {
+  font-size: 0.8125rem;
+  color: var(--text);
+}
+
+.theme-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 999px;
+  padding: 0;
+  cursor: pointer;
+  background: var(--border-subtle);
+  transition: background 0.2s ease;
+}
+
+.theme-switch[aria-checked="true"] {
+  background: var(--deep);
+}
+
+.theme-switch:focus-visible {
+  outline: 2px solid var(--deep);
+  outline-offset: 2px;
+}
+
+.theme-switch__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease;
+  pointer-events: none;
+}
+
+.theme-switch[aria-checked="true"] .theme-switch__knob {
+  transform: translateX(20px);
+  background: var(--text-on-deep);
+}
+
+html[data-theme="light"] .theme-switch[aria-checked="false"] .theme-switch__knob {
+  background: #ffffff;
 }
 
 /* ——— Main ——— */
@@ -178,7 +297,7 @@ button {
   border: none;
   border-radius: var(--radius-card);
   background: var(--deep);
-  color: var(--bg);
+  color: var(--text-on-deep);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -198,7 +317,7 @@ button {
   border-radius: var(--radius-card);
   padding: 0.65rem 1.15rem;
   background: var(--deep);
-  color: var(--bg);
+  color: var(--text-on-deep);
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -332,10 +451,14 @@ button {
 }
 
 .stability-chart__grid {
-  stroke: #333;
+  stroke: var(--chart-grid-stroke);
   stroke-width: 1;
   stroke-dasharray: 4 6;
   fill: none;
+}
+
+.stability-chart__grid--mid {
+  stroke: var(--chart-grid-mid);
 }
 
 .stability-chart__marker-line {
@@ -447,7 +570,7 @@ button {
 
 .distribution__track {
   height: 10px;
-  background: #0d0d0d;
+  background: var(--dist-track-bg);
   border-radius: 999px;
   overflow: hidden;
   border: 1px solid var(--border-subtle);
