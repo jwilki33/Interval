@@ -48,6 +48,8 @@
 
     environment: 0.68,
 
+    heartrate: 0.78,
+
   };
 
 
@@ -59,6 +61,8 @@
     browser: "Browser drift",
 
     environment: "Environmental distractions",
+
+    heartrate: "Heart rate spike",
 
   };
 
@@ -644,6 +648,24 @@
 
       svg.appendChild(chk);
 
+    } else if (kind === "heartrate") {
+
+      svg.setAttribute("fill", "none");
+
+      svg.setAttribute("stroke", "currentColor");
+
+      svg.setAttribute("stroke-width", "1.8");
+
+      var hr = document.createElementNS(NS, "path");
+
+      hr.setAttribute("d", "M2 12h3.5l2-5 3.5 10 3-7 2 4H22");
+
+      hr.setAttribute("stroke-linecap", "round");
+
+      hr.setAttribute("stroke-linejoin", "round");
+
+      svg.appendChild(hr);
+
     } else {
 
       svg.setAttribute("fill", "currentColor");
@@ -868,6 +890,8 @@
 
     startChartAndTimer(svg);
 
+    document.dispatchEvent(new CustomEvent("interval-session-start"));
+
   }
 
 
@@ -987,6 +1011,8 @@
     }
 
 
+
+    document.dispatchEvent(new CustomEvent("interval-session-end"));
 
     updateUI();
 
@@ -1137,6 +1163,18 @@
     }
 
   });
+
+  // Public API for external modules (e.g. heart-rate.js)
+
+  window.IntervalSession = {
+
+    recordFriction: function (kind) { recordFriction(kind); },
+
+    getState: function () { return state; },
+
+    getSessionStartTime: function () { return sessionStartTime; },
+
+  };
 
 })();
 

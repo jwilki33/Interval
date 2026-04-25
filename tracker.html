@@ -154,6 +154,7 @@
           <h1 class="main__title">Tracker</h1>
           <div class="main__header-spacer"></div>
           <div class="header-actions">
+            <button type="button" class="btn-secondary" id="hr-connect-btn" aria-pressed="false">Connect HR Monitor</button>
             <button type="button" class="btn-primary" id="session-toggle-btn">Start Session</button>
           </div>
           <div class="header-meta">
@@ -161,6 +162,12 @@
             <span class="pill">
               <span class="pill__dot" aria-hidden="true"></span>
               <span class="pill__time" id="session-timer">00:00:00</span>
+            </span>
+            <span class="pill hr-bpm-pill" id="hr-bpm-pill" hidden aria-live="polite">
+              <svg class="hr-ecg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 12h3.5l2-5 3.5 10 3-7 2 4H22" />
+              </svg>
+              <span id="hr-bpm-value">--</span> bpm
             </span>
           </div>
         </header>
@@ -309,5 +316,6 @@
     <script src="js/sidebar-brand.js" defer></script>
     <script src="js/session-calendar.js" defer></script>
     <script src="js/live-session.js" defer></script>
+    <script src="js/heart-rate.js" defer></script>
   </body>
 </html>

@@ -407,6 +407,56 @@ html[data-reduced-motion="reduce"] *::after {
   background: var(--distracted);
 }
 
+.btn-secondary {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 0.65rem 1.15rem;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--font-ui);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+.btn-secondary:active {
+  transform: scale(0.99);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-secondary--active {
+  border-color: var(--deep);
+  color: var(--deep);
+}
+
+.btn-secondary--active:hover {
+  border-color: var(--deep);
+  color: var(--deep);
+  background: color-mix(in srgb, var(--deep) 8%, transparent);
+}
+
+/* HR BPM pill (appears in header-meta when device is connected) */
+.hr-bpm-pill {
+  color: var(--deep);
+  border-color: var(--deep);
+}
+
+.hr-ecg-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  stroke: var(--deep);
+}
+
 .header-meta {
   display: flex;
   align-items: center;
