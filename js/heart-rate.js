@@ -23,9 +23,21 @@
   // ── Spike detection config ────────────────────────────────────────────────────
   var WARMUP_SEC        = 120;  // Seconds before spike detection activates
   var BASELINE_WIN_SEC  = 90;   // Rolling window (seconds) used to compute baseline
-  var SPIKE_THRESHOLD   = 15;   // BPM above baseline required to count as a spike
+  var SPIKE_THRESHOLD   = 15;   // BPM above baseline required to count as a logged spike
+  var NUDGE_THRESHOLD   = 5;    // BPM above baseline for the silent continuous nudge
   var SPIKE_SUSTAIN_SEC = 10;   // Seconds elevation must persist before triggering
   var COOLDOWN_SEC      = 90;   // Minimum gap between auto-logged distraction events
+
+  // Proportional norm mapping: delta (bpm above baseline) → stability curve norm
+  // delta 15 → 0.52 (low neutral), delta 50+ → 0.93 (phone-level severe)
+  var NORM_DELTA_MIN  = 15;
+  var NORM_DELTA_MAX  = 50;
+  var NORM_OUT_MIN    = 0.52;
+  var NORM_OUT_MAX    = 0.93;
+
+  // Silent nudge: while HR is mildly elevated, gently hold the curve up
+  // (applied every 5 s; 3% pull per call, balanced against session recovery)
+  var NUDGE_INTERVAL_MS = 5000;
 
   // ── Runtime state ─────────────────────────────────────────────────────────────
   var device         = null;
@@ -38,6 +50,7 @@
   var lastFrictionMs = null;
   var sessionActive  = false;
   var sessionStartMs = null;
+  var nudgeTimer     = null;
 
   // ── Baseline & spike detection ────────────────────────────────────────────────
 
@@ -54,6 +67,48 @@
     return sum / recent.length;
   }
 
+  /**
+   * Maps BPM delta above baseline to a stability curve norm value (0–1).
+   * Uses a linear interpolation so small spikes cause small moves and
+   * large spikes approach phone-level severity — never overshooting it.
+   *
+   *   delta ≤ 15 bpm  →  norm 0.52  (low neutral, barely perceptible)
+   *   delta = 30 bpm  →  norm 0.70  (distracted territory)
+   *   delta = 40 bpm  →  norm 0.82  (significantly distracted)
+   *   delta ≥ 50 bpm  →  norm 0.93  (phone-level — caps here)
+   */
+  function deltaToNorm(delta) {
+    var clamped = Math.max(NORM_DELTA_MIN, Math.min(delta, NORM_DELTA_MAX));
+    var t = (clamped - NORM_DELTA_MIN) / (NORM_DELTA_MAX - NORM_DELTA_MIN);
+    return NORM_OUT_MIN + t * (NORM_OUT_MAX - NORM_OUT_MIN);
+  }
+
+  /**
+   * Silent nudge: called every NUDGE_INTERVAL_MS while a session is active.
+   * When HR is mildly elevated, gently holds the curve above baseline instead
+   * of letting it recover all the way to "Deep." Not logged as a distraction.
+   */
+  function applyNudge() {
+    if (!sessionActive || !connected) return;
+    if (!sessionStartMs || (Date.now() - sessionStartMs) < WARMUP_SEC * 1000) return;
+
+    var baseline = rollingBaseline();
+    if (baseline === null) return;
+
+    var delta = currentBpm - baseline;
+    if (delta < NUDGE_THRESHOLD) return;
+
+    // Scale nudge target: 5 bpm above baseline → gentle pull toward ~0.30
+    // 15+ bpm → pull toward the same norm that the logged spike would use
+    var nudgeTarget = delta >= SPIKE_THRESHOLD
+      ? deltaToNorm(delta)
+      : 0.18 + ((delta - NUDGE_THRESHOLD) / (SPIKE_THRESHOLD - NUDGE_THRESHOLD)) * 0.20;
+
+    if (window.IntervalSession && typeof window.IntervalSession.nudgeNorm === "function") {
+      window.IntervalSession.nudgeNorm(nudgeTarget);
+    }
+  }
+
   function checkSpike(bpm) {
     if (!sessionActive) return;
     var now = Date.now();
@@ -62,13 +117,15 @@
     var baseline = rollingBaseline();
     if (baseline === null) return;
 
-    if (bpm > baseline + SPIKE_THRESHOLD) {
+    var delta = bpm - baseline;
+
+    if (delta >= SPIKE_THRESHOLD) {
       if (!spikeStartMs) spikeStartMs = now;
       var elevated = now - spikeStartMs;
       if (elevated >= SPIKE_SUSTAIN_SEC * 1000) {
         var cooldownOk = !lastFrictionMs || (now - lastFrictionMs) >= COOLDOWN_SEC * 1000;
         if (cooldownOk) {
-          triggerFriction(bpm, baseline);
+          triggerFriction(bpm, baseline, delta);
           lastFrictionMs = now;
           spikeStartMs   = null;
         }
@@ -78,15 +135,17 @@
     }
   }
 
-  function triggerFriction(bpm, baseline) {
+  function triggerFriction(bpm, baseline, delta) {
+    var normOverride = deltaToNorm(delta);
     if (window.IntervalSession && typeof window.IntervalSession.recordFriction === "function") {
-      window.IntervalSession.recordFriction("heartrate");
+      window.IntervalSession.recordFriction("heartrate", normOverride);
     }
     if (window.IntervalTracking && typeof window.IntervalTracking.log === "function") {
       window.IntervalTracking.log("hr_spike_auto", {
-        bpm:      Math.round(bpm),
-        baseline: Math.round(baseline),
-        delta:    Math.round(bpm - baseline)
+        bpm:        Math.round(bpm),
+        baseline:   Math.round(baseline),
+        delta:      Math.round(delta),
+        normImpact: normOverride.toFixed(2)
       });
     }
   }
@@ -257,11 +316,19 @@
     readings       = [];
     spikeStartMs   = null;
     lastFrictionMs = null;
+
+    if (nudgeTimer) clearInterval(nudgeTimer);
+    nudgeTimer = setInterval(applyNudge, NUDGE_INTERVAL_MS);
   });
 
   document.addEventListener("interval-session-end", function () {
-    sessionActive  = false;
-    spikeStartMs   = null;
+    sessionActive = false;
+    spikeStartMs  = null;
+
+    if (nudgeTimer) {
+      clearInterval(nudgeTimer);
+      nudgeTimer = null;
+    }
   });
 
   // ── Init ──────────────────────────────────────────────────────────────────────

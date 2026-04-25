@@ -178,13 +178,30 @@
 
 
 
-  function applyFrictionSpike(kind) {
+  function applyFrictionSpike(kind, normOverride) {
 
-    var spike = FRICTION_SPIKE[kind];
+    var spike = (normOverride !== undefined) ? normOverride : FRICTION_SPIKE[kind];
 
     if (spike === undefined) return;
 
     sessionNorm = clamp01(Math.max(sessionNorm, spike));
+
+  }
+
+
+
+  /**
+   * Gentle continuous pull toward a target norm — used by heart-rate.js
+   * while HR is elevated. Applies a 3% pull per call (called every 5 s),
+   * which is subtle enough that normal session recovery can fight it when
+   * HR is only mildly elevated, but wins when HR stays high.
+   */
+
+  function nudgeNorm(targetNorm) {
+
+    if (state !== "running") return;
+
+    sessionNorm = clamp01(sessionNorm + (targetNorm - sessionNorm) * 0.03);
 
   }
 
@@ -1050,7 +1067,7 @@
 
 
 
-  function recordFriction(kind) {
+  function recordFriction(kind, normOverride) {
 
     if (state !== "running") return;
 
@@ -1058,7 +1075,7 @@
 
 
 
-    applyFrictionSpike(kind);
+    applyFrictionSpike(kind, normOverride);
 
     distractionCount += 1;
 
@@ -1168,7 +1185,9 @@
 
   window.IntervalSession = {
 
-    recordFriction: function (kind) { recordFriction(kind); },
+    recordFriction: function (kind, normOverride) { recordFriction(kind, normOverride); },
+
+    nudgeNorm: function (targetNorm) { nudgeNorm(targetNorm); },
 
     getState: function () { return state; },
 
