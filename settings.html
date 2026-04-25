@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interval — Settings</title>
+    <script src="js/onboarding-guard.js"></script>
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("interval_theme");
+          if (t === "light" || t === "amber") {
+            document.documentElement.setAttribute("data-theme", t);
+          }
+          var ts = localStorage.getItem("interval_text_scale");
+          if (ts === "sm" || ts === "lg") {
+            document.documentElement.setAttribute("data-text-scale", ts);
+          }
+          var motion = localStorage.getItem("interval_motion");
+          var reduce = false;
+          if (motion === "reduce") reduce = true;
+          else if (motion === "full") reduce = false;
+          else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) reduce = true;
+          if (reduce) document.documentElement.setAttribute("data-reduced-motion", "reduce");
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="css/live-session.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/settings.css" />
+  </head>
+  <body class="page-settings">
+    <div class="app">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="sidebar__brand sidebar__brand--link" id="sidebar-brand-link" href="profile.html" aria-label="Profile">
+          <svg class="sidebar__logo" viewBox="0 0 32 32" aria-hidden="true" fill="none">
+            <line x1="16" y1="3" x2="16" y2="29" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="27.3" y1="9.5" x2="4.7" y2="22.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="4.7" y1="9.5" x2="27.3" y2="22.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <span class="sidebar__title">Interval</span>
+        </a>
+        <nav class="sidebar__nav">
+          <a class="sidebar__link" href="index.html">
+            <svg class="sidebar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            Dashboard
+          </a>
+          <a class="sidebar__link" href="tracker.html">
+            <svg class="sidebar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
+            </svg>
+            Tracker
+          </a>
+          <a class="sidebar__link" href="calendar.html">
+            <svg class="sidebar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="5" width="18" height="16" rx="2" />
+              <path d="M8 3v4M16 3v4" />
+            </svg>
+            Calendar
+          </a>
+          <a class="sidebar__link" href="guide.html">
+            <svg class="sidebar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="4" width="16" height="16" rx="2" />
+              <path d="M8 10h8M8 14h5" />
+            </svg>
+            Guide
+          </a>
+        </nav>
+        <div class="sidebar__footer">
+          <a class="sidebar__link sidebar__link--active" href="settings.html" aria-current="page">
+            <svg class="sidebar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
+            </svg>
+            Settings
+          </a>
+          <a class="sidebar__link" href="guide.html">
+            <svg class="sidebar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4M12 8h.01" />
+            </svg>
+            Help Center
+          </a>
+        </div>
+      </aside>
+
+      <div class="main main--settings">
+        <header class="main__header main__header--settings">
+          <div>
+            <h1 class="main__title">Settings</h1>
+            <p class="settings-intro">Preferences, profile, and data.</p>
+          </div>
+        </header>
+
+        <div class="settings-grid">
+
+          <!-- LEFT COLUMN -->
+          <div class="settings-col settings-col--left">
+
+            <!-- Appearance -->
+            <section class="card settings-section" aria-labelledby="settings-appearance-heading">
+              <h2 class="settings-section__title" id="settings-appearance-heading">Appearance</h2>
+              <p class="settings-section__desc">Choose how Interval looks. Changes apply instantly and save to this device.</p>
+
+              <div class="settings-field-group">
+                <span class="settings-field-label">Theme</span>
+                <div class="theme-cards" role="group" aria-label="Choose a theme">
+
+                  <button class="theme-card" data-theme-option="dark" aria-pressed="false" type="button">
+                    <div class="theme-card__preview theme-card__preview--dark">
+                      <div class="theme-card__preview-sidebar"></div>
+                      <div class="theme-card__preview-content">
+                        <div class="theme-card__preview-bar theme-card__preview-bar--accent"></div>
+                        <div class="theme-card__preview-bar"></div>
+                        <div class="theme-card__preview-bar theme-card__preview-bar--short"></div>
+                      </div>
+                    </div>
+                    <span class="theme-card__label">Dark</span>
+                    <span class="theme-card__active-badge" aria-hidden="true">&#10003; active</span>
+                  </button>
+
+                  <button class="theme-card" data-theme-option="light" aria-pressed="false" type="button">
+                    <div class="theme-card__preview theme-card__preview--light">
+                      <div class="theme-card__preview-sidebar"></div>
+                      <div class="theme-card__preview-content">
+                        <div class="theme-card__preview-bar theme-card__preview-bar--accent"></div>
+                        <div class="theme-card__preview-bar"></div>
+                        <div class="theme-card__preview-bar theme-card__preview-bar--short"></div>
+                      </div>
+                    </div>
+                    <span class="theme-card__label">Light</span>
+                    <span class="theme-card__active-badge" aria-hidden="true">&#10003; active</span>
+                  </button>
+
+                  <button class="theme-card" data-theme-option="amber" aria-pressed="false" type="button">
+                    <div class="theme-card__preview theme-card__preview--amber">
+                      <div class="theme-card__preview-sidebar"></div>
+                      <div class="theme-card__preview-content">
+                        <div class="theme-card__preview-bar theme-card__preview-bar--accent"></div>
+                        <div class="theme-card__preview-bar"></div>
+                        <div class="theme-card__preview-bar theme-card__preview-bar--short"></div>
+                      </div>
+                    </div>
+                    <span class="theme-card__label">Amber</span>
+                    <span class="theme-card__active-badge" aria-hidden="true">&#10003; active</span>
+                  </button>
+
+                </div>
+              </div>
+
+              <div class="settings-field-group settings-field-group--row">
+                <span class="settings-field-label">Text size</span>
+                <div class="settings-toggle-group" role="group" aria-label="Text size">
+                  <button class="settings-toggle-btn" data-text-scale="sm" type="button">Small</button>
+                  <button class="settings-toggle-btn settings-toggle-btn--active" data-text-scale="md" type="button">Default</button>
+                  <button class="settings-toggle-btn" data-text-scale="lg" type="button">Large</button>
+                </div>
+              </div>
+
+            </section>
+
+            <!-- Profile -->
+            <section class="card settings-section" aria-labelledby="settings-profile-heading">
+              <h2 class="settings-section__title" id="settings-profile-heading">Profile</h2>
+              <dl class="settings-profile-dl">
+                <div class="settings-profile-row">
+                  <dt class="settings-profile-dt">Name</dt>
+                  <dd class="settings-profile-dd" id="sp-name">—</dd>
+                </div>
+                <div class="settings-profile-row">
+                  <dt class="settings-profile-dt">Email</dt>
+                  <dd class="settings-profile-dd" id="sp-email">—</dd>
+                </div>
+                <div class="settings-profile-row">
+                  <dt class="settings-profile-dt">Focus area</dt>
+                  <dd class="settings-profile-dd" id="sp-focus">—</dd>
+                </div>
+              </dl>
+              <button type="button" class="settings-text-btn" id="sp-retake-btn">Retake self-assessment</button>
+            </section>
+
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div class="settings-col settings-col--right">
+
+            <!-- Tracking -->
+            <section class="card settings-section" aria-labelledby="settings-tracking-heading">
+              <h2 class="settings-section__title" id="settings-tracking-heading">Tracking</h2>
+              <p class="settings-section__desc">Default mode applied when you start a new session.</p>
+              <div class="settings-toggle-group settings-toggle-group--tracking" role="group" aria-label="Tracking mode">
+                <button class="settings-toggle-btn settings-toggle-btn--active" data-tracking-mode="reflective" type="button">Reflective</button>
+                <button class="settings-toggle-btn" data-tracking-mode="active" type="button">Active</button>
+              </div>
+            </section>
+
+            <!-- Data -->
+            <section class="card settings-section" aria-labelledby="settings-data-heading">
+              <h2 class="settings-section__title" id="settings-data-heading">Data</h2>
+              <p class="settings-section__desc">Your sessions, goals, and answers are stored locally on this device.</p>
+              <div class="settings-data-actions">
+                <button type="button" class="settings-text-btn" id="sp-export-btn">Download session backup</button>
+                <button type="button" class="settings-text-btn settings-text-btn--danger" id="sp-clear-sessions-btn">Clear session history</button>
+                <button type="button" class="settings-text-btn settings-text-btn--danger" id="sp-clear-goals-btn">Clear goal log</button>
+              </div>
+            </section>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="js/profile.js"></script>
+    <script src="js/behavior-tracking.js" defer></script>
+    <script src="js/theme.js" defer></script>
+    <script src="js/app-settings.js" defer></script>
+    <script src="js/sidebar-brand.js" defer></script>
+    <script src="js/session-calendar.js" defer></script>
+    <script src="js/settings-page.js" defer></script>
+  </body>
+</html>

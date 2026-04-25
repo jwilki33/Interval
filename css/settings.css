@@ -1,0 +1,323 @@
+/* Settings full page */
+
+.main--settings {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 2.5rem;
+}
+
+.main__header--settings {
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.settings-intro {
+  margin: 0.15rem 0 0;
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Two-column grid ──────────────────────────────────────────────────────── */
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr;
+  gap: 1rem;
+  padding: 0 1.5rem 1rem;
+}
+
+@media (max-width: 860px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.settings-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Section cards ───────────────────────────────────────────────────────── */
+
+.settings-section {
+  gap: 0.9rem;
+}
+
+.settings-section__title {
+  margin: 0 0 0.05rem;
+  font-size: var(--font-ui);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.settings-section__desc {
+  margin: 0;
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* ── Field groups ────────────────────────────────────────────────────────── */
+
+.settings-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.settings-field-group--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.settings-field-label {
+  font-size: var(--font-caption);
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* ── Theme cards ─────────────────────────────────────────────────────────── */
+
+.theme-cards {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.theme-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+  padding: 0.5rem;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.14s ease;
+  position: relative;
+}
+
+.theme-card:hover {
+  border-color: var(--text-muted);
+}
+
+.theme-card--active {
+  border-color: var(--deep);
+}
+
+.theme-card__active-badge {
+  display: none;
+  position: absolute;
+  top: 0.35rem;
+  right: 0.4rem;
+  font-size: 0.6rem;
+  color: var(--deep);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.theme-card--active .theme-card__active-badge {
+  display: block;
+}
+
+.theme-card__preview {
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Dark preview */
+.theme-card__preview--dark {
+  background: #111111;
+}
+.theme-card__preview--dark .theme-card__preview-sidebar {
+  background: #1a1a1a;
+}
+.theme-card__preview--dark .theme-card__preview-bar {
+  background: #2a2a2a;
+}
+.theme-card__preview--dark .theme-card__preview-bar--accent {
+  background: #00c853;
+}
+
+/* Light preview */
+.theme-card__preview--light {
+  background: #f2f2f2;
+}
+.theme-card__preview--light .theme-card__preview-sidebar {
+  background: #ffffff;
+}
+.theme-card__preview--light .theme-card__preview-bar {
+  background: #e0e0e0;
+}
+.theme-card__preview--light .theme-card__preview-bar--accent {
+  background: #00a344;
+}
+
+/* Amber preview */
+.theme-card__preview--amber {
+  background: #120d00;
+}
+.theme-card__preview--amber .theme-card__preview-sidebar {
+  background: #1d1500;
+}
+.theme-card__preview--amber .theme-card__preview-bar {
+  background: #2a1e00;
+}
+.theme-card__preview--amber .theme-card__preview-bar--accent {
+  background: #d49200;
+}
+
+.theme-card__preview-sidebar {
+  width: 28%;
+  flex-shrink: 0;
+}
+
+.theme-card__preview-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px;
+}
+
+.theme-card__preview-bar {
+  height: 4px;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.theme-card__preview-bar--short {
+  width: 65%;
+}
+
+.theme-card__label {
+  font-family: var(--font-mono);
+  font-size: calc(var(--font-caption) * 0.88);
+  color: var(--text-muted);
+}
+
+.theme-card--active .theme-card__label {
+  color: var(--text);
+}
+
+/* ── Toggle button groups ────────────────────────────────────────────────── */
+
+.settings-toggle-group {
+  display: flex;
+  gap: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  align-self: flex-start;
+}
+
+.settings-toggle-group--tracking {
+  align-self: auto;
+}
+
+.settings-toggle-btn {
+  padding: 0.45rem 0.9rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-caption);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.settings-toggle-btn + .settings-toggle-btn {
+  border-left: 1px solid var(--border-subtle);
+}
+
+.settings-toggle-btn--active {
+  background: var(--deep);
+  color: var(--text-on-deep);
+}
+
+.settings-toggle-btn:not(.settings-toggle-btn--active):hover {
+  background: var(--surface-elevated);
+  color: var(--text);
+}
+
+/* ── Profile DL ──────────────────────────────────────────────────────────── */
+
+.settings-profile-dl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.settings-profile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.settings-profile-row:last-child {
+  border-bottom: none;
+}
+
+.settings-profile-dt {
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+}
+
+.settings-profile-dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--font-caption);
+  color: var(--text);
+  text-align: right;
+}
+
+/* ── Text buttons ────────────────────────────────────────────────────────── */
+
+.settings-text-btn {
+  display: inline-block;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--deep);
+  font-family: var(--font-mono);
+  font-size: var(--font-caption);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in srgb, var(--deep) 40%, transparent);
+  transition: color 0.12s ease;
+  text-align: left;
+}
+
+.settings-text-btn:hover {
+  color: var(--focused);
+}
+
+.settings-text-btn--danger {
+  color: var(--distracted);
+  text-decoration-color: color-mix(in srgb, var(--distracted) 40%, transparent);
+}
+
+.settings-text-btn--danger:hover {
+  color: color-mix(in srgb, var(--distracted) 80%, var(--text));
+}
+
+.settings-data-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  align-items: flex-start;
+}

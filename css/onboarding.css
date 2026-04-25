@@ -142,3 +142,142 @@
   color: var(--text-muted);
   opacity: 0.9;
 }
+
+/* ── Self-Assessment steps ─────────────────────────────────────────── */
+
+.assess-card {
+  padding-bottom: 0;
+}
+
+.assess-header {
+  margin-bottom: 0.9rem;
+}
+
+.assess-step-label {
+  font-family: var(--font-mono);
+  font-size: calc(var(--font-caption) * 0.87);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.assess-question {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.assess-hint {
+  margin: 0 0 1rem;
+  font-size: var(--font-caption);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.assess-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1.15rem;
+}
+
+.assess-option {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--bg);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-caption);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.assess-option:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+.assess-option--selected {
+  border-color: var(--deep);
+  color: var(--text);
+  background: color-mix(in srgb, var(--deep) 8%, var(--bg));
+}
+
+.assess-option__dot {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-subtle);
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.assess-option--selected .assess-option__dot {
+  border-color: var(--deep);
+  background: var(--deep);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--deep) 25%, transparent);
+}
+
+.assess-option__text {
+  line-height: 1.3;
+}
+
+.assess-actions {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.assess-back-btn {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-caption);
+  cursor: pointer;
+  transition: color 0.12s ease, border-color 0.12s ease;
+  min-width: 4rem;
+}
+
+.assess-back-btn:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.assess-next-btn {
+  flex: 1;
+  justify-content: center;
+}
+
+.assess-next-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.assess-progress-bar {
+  margin: 0 -1.4rem;
+  height: 3px;
+  background: var(--border-subtle);
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  overflow: hidden;
+}
+
+.assess-progress-fill {
+  height: 100%;
+  background: var(--deep);
+  transition: width 0.3s ease;
+}

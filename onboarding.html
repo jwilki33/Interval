@@ -7,8 +7,9 @@
     <script>
       (function () {
         try {
-          if (localStorage.getItem("interval_theme") === "light") {
-            document.documentElement.setAttribute("data-theme", "light");
+          var t = localStorage.getItem("interval_theme");
+          if (t === "light" || t === "amber") {
+            document.documentElement.setAttribute("data-theme", t);
           }
         } catch (e) {}
       })();
@@ -27,7 +28,8 @@
         <span class="onboarding__product">Interval</span>
       </div>
 
-      <div class="onboarding__card">
+      <!-- Step 0: Profile form -->
+      <div class="onboarding__card" id="ob-step-profile">
         <h1 class="onboarding__title">Welcome</h1>
         <p class="onboarding__subtitle">
           Create a quick profile so Interval can greet you and tailor the experience. You can add a full account when sync is available.
@@ -66,7 +68,7 @@
             <label class="onboarding__label" for="profile-focus">What are you mainly focusing on?</label>
             <select id="profile-focus" class="onboarding__select" name="focus">
               <option value="work">Work &amp; career</option>
-              <option value="study">Study &amp; classes</option>
+              <option value="study">School &amp; studies</option>
               <option value="personal">Personal projects</option>
               <option value="other">Other</option>
             </select>
@@ -75,12 +77,36 @@
           <p class="onboarding__hint">Passwords and sign-in will connect to your account when cloud sync ships. For now, your profile stays on this device.</p>
 
           <div class="onboarding__actions">
-            <button type="submit" class="btn-primary onboarding__submit">Continue to Interval</button>
+            <button type="submit" class="btn-primary onboarding__submit">Continue to self-assessment</button>
             <button type="button" class="onboarding__skip" id="onboarding-skip">Skip for now</button>
           </div>
         </form>
+      </div>
 
-        <p class="onboarding__footnote">You can revisit or reset your profile later from Settings when that option is added.</p>
+      <!-- Steps 1-6: Self-assessment -->
+      <div class="onboarding__card assess-card" id="ob-step-assess" hidden>
+        <div class="assess-header">
+          <span class="assess-step-label" id="assess-step-label">SELF-ASSESSMENT &middot; 1 OF 6</span>
+        </div>
+        <h2 class="assess-question" id="assess-question"></h2>
+        <p class="assess-hint" id="assess-hint"></p>
+        <div class="assess-options" id="assess-options" role="radiogroup" aria-labelledby="assess-question"></div>
+        <div class="assess-actions">
+          <button type="button" class="assess-back-btn" id="assess-back">Back</button>
+          <button type="button" class="btn-primary assess-next-btn" id="assess-next" disabled>Next</button>
+        </div>
+        <div class="assess-progress-bar" aria-hidden="true">
+          <div class="assess-progress-fill" id="assess-progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Completion screen -->
+      <div class="onboarding__card" id="ob-step-complete" hidden>
+        <h2 class="onboarding__title">You&#8217;re set, friend.</h2>
+        <p class="onboarding__subtitle">
+          Your Guide is ready with recommendations based on what you shared. You can start your first reflective session whenever you like.
+        </p>
+        <button type="button" class="btn-primary onboarding__submit" id="enter-interval">Enter Interval</button>
       </div>
     </div>
 

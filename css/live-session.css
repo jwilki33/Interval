@@ -53,6 +53,31 @@ html[data-theme="light"] {
   --dist-track-bg: #eaeaea;
 }
 
+/* Amber — warm dark mode that eliminates blue-spectrum light */
+html[data-theme="amber"] {
+  --bg: #120d00;
+  --surface: #1d1500;
+  --surface-elevated: #271c00;
+  --border-subtle: #382800;
+  --text: #f0d070;
+  --text-muted: #7a6230;
+  --text-on-deep: #0a0800;
+  --deep: #00b84a;
+  --focused: #d49200;
+  --neutral: #c05600;
+  --distracted: #b52000;
+  --chart-grid-stroke: #2a1e00;
+  --chart-grid-mid: #3c2c00;
+  --dist-track-bg: #0e0900;
+  --sidebar-width: 240px;
+  --radius-card: 8px;
+  --font-sans: "Rinter", system-ui, sans-serif;
+  --font-mono: "Founders Grotesk Mono", ui-monospace, monospace;
+  --text-scale-multiplier: 1;
+  --font-ui: calc(0.8125rem * var(--text-scale-multiplier));
+  --font-caption: calc(0.75rem * var(--text-scale-multiplier));
+}
+
 *,
 *::before,
 *::after {

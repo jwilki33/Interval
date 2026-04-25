@@ -202,6 +202,138 @@
     save(goals);
   }
 
+  // ── Personalised recommendations from self-assessment ────────────────────────
+
+  var REC_MAP = {
+    q1_phone: {
+      title: "Create distance, not just willpower.",
+      body:  "Before each session, put your phone face-down in another room. Physical distance reduces check-ins far more effectively than resolve alone."
+    },
+    q1_browser: {
+      title: "Close every tab you don\u2019t need before starting.",
+      body:  "Browser drift compounds \u2014 one idle tab leads to another. Try full-screen mode or a site blocker for the first 25 minutes of each session."
+    },
+    q1_environment: {
+      title: "Signal \u2018focus mode\u2019 to your surroundings.",
+      body:  "Headphones, a closed door, or a consistent ambient sound tells others \u2014 and your own brain \u2014 that a session is in progress."
+    },
+    q1_internal: {
+      title: "Brain dump before you begin.",
+      body:  "Spend 2 minutes writing down anything on your mind before starting. Clearing working memory makes it far easier to stay present."
+    },
+    q1_fatigue: {
+      title: "Match your hardest work to your energy peak.",
+      body:  "Your stability curve will show when you drift most. Guard your peak window for the work that demands the most from you."
+    },
+    q2_early_morning: {
+      title: "Protect your mornings ruthlessly.",
+      body:  "Avoid checking email or social feeds before your first session. Those inputs fragment your best focus window before it even starts."
+    },
+    q2_evening: {
+      title: "Evening sessions reward a consistent setup.",
+      body:  "Dim your space and use the same desk layout each time. Consistent environmental cues speed up the transition into deep focus."
+    },
+    q3_under_15: {
+      title: "Build focus duration gradually, week by week.",
+      body:  "Start with 10-minute targets and add 5 minutes each week. The stability curve shows exactly when you\u2019re pushing past your natural limit."
+    },
+    q3_15_30: {
+      title: "The 25-minute block is your starting sweet spot.",
+      body:  "A single focused block followed by a 5-minute break matches your current window. Track your score per session to see it grow."
+    },
+    q5_resistant: {
+      title: "Use a 2-minute commitment rule.",
+      body:  "When starting feels hard, commit to just opening the work and setting a 2-minute timer. Resistance almost always fades once momentum begins."
+    },
+    q6_starting: {
+      title: "Prepare tomorrow\u2019s first task tonight.",
+      body:  "Knowing exactly what to open eliminates the decision paralysis that drives procrastination. Write it in your goal before ending today."
+    },
+    q6_interruptions: {
+      title: "A visible focus signal cuts interruptions significantly.",
+      body:  "Headphones, a status message, or a physical do-not-disturb cue reduces interruptions and teaches others your patterns over time."
+    },
+    q6_fatigue: {
+      title: "Protect recovery as seriously as sessions.",
+      body:  "Mental fatigue compounds across days. Short real breaks \u2014 away from screens \u2014 between sessions restore capacity faster than passive scrolling."
+    },
+    q6_balance: {
+      title: "One focus area per session.",
+      body:  "Context-switching between projects costs more attention than it saves time. Commit each session to a single topic, logged in your goal."
+    },
+    q6_staying: {
+      title: "Use the friction flag the moment you drift.",
+      body:  "Tapping the friction button the instant you notice a pull \u2014 not after \u2014 gives the stability curve its most accurate data and trains pattern awareness."
+    },
+    general: {
+      title: "Review your curve weekly, not after every session.",
+      body:  "Single sessions vary too much to judge. Weekly patterns in your stability curve reveal the real structure of your focus habits."
+    }
+  };
+
+  function buildRecommendations(assessment) {
+    var recs = [];
+
+    if (!assessment) {
+      return [REC_MAP.general];
+    }
+
+    // Q1: primary distraction source
+    var q1Key = "q1_" + (assessment.q1 || "");
+    if (REC_MAP[q1Key]) recs.push(REC_MAP[q1Key]);
+
+    // Q2: peak time (only for early morning or evening — most actionable)
+    var q2Key = "q2_" + (assessment.q2 || "");
+    if (REC_MAP[q2Key]) recs.push(REC_MAP[q2Key]);
+
+    // Q3: typical session length
+    var q3Key = "q3_" + (assessment.q3 || "");
+    if (REC_MAP[q3Key] && recs.length < 4) recs.push(REC_MAP[q3Key]);
+
+    // Q5: start feeling
+    if (assessment.q5 === "resistant" && recs.length < 4) {
+      recs.push(REC_MAP.q5_resistant);
+    }
+
+    // Q6: main challenge
+    var q6Key = "q6_" + (assessment.q6 || "");
+    if (REC_MAP[q6Key] && recs.length < 4) recs.push(REC_MAP[q6Key]);
+
+    // Ensure minimum 3 recs
+    while (recs.length < 3) recs.push(REC_MAP.general);
+
+    return recs.slice(0, 4);
+  }
+
+  function renderRecommendations() {
+    var listEl = document.getElementById("guide-rec-list");
+    var hintEl = document.getElementById("guide-rec-hint");
+    if (!listEl) return;
+
+    var profile    = window.IntervalProfile ? window.IntervalProfile.get() : null;
+    var assessment = profile && profile.assessment ? profile.assessment : null;
+    var recs       = buildRecommendations(assessment);
+
+    while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+
+    for (var i = 0; i < recs.length; i++) {
+      var li      = document.createElement("li");
+      var strong  = document.createElement("strong");
+      strong.textContent = recs[i].title;
+      li.appendChild(strong);
+      li.appendChild(document.createTextNode(" " + recs[i].body));
+      listEl.appendChild(li);
+    }
+
+    if (hintEl) {
+      hintEl.textContent = assessment
+        ? "Personalised from your self-assessment \u2014 retake it in Settings any time."
+        : "Complete the self-assessment in onboarding to get personalised recommendations.";
+    }
+  }
+
+  // ── DOMContentLoaded ──────────────────────────────────────────────────────────
+
   document.addEventListener("DOMContentLoaded", function () {
     var form = document.getElementById("goal-day-form");
     if (!form) return;
@@ -216,5 +348,6 @@
     });
 
     render();
+    renderRecommendations();
   });
 })();
