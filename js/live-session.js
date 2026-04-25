@@ -68,6 +68,54 @@
 
 
 
+  /**
+   * Per-type duration options shown in friction dialog step 2.
+   * Each entry maps a user-chosen duration label to a proportional norm override.
+   * Short distractions cause small curve moves; long ones approach phone-level severity.
+   */
+
+  var FRICTION_DURATIONS = {
+
+    phone: [
+
+      { label: "Quick glance",         sublabel: "under 1 min",  norm: 0.72 },
+
+      { label: "Short scroll",         sublabel: "1 \u2013 5 min",   norm: 0.84 },
+
+      { label: "Extended use",         sublabel: "5 \u2013 15 min",  norm: 0.91 },
+
+      { label: "Long detour",          sublabel: "15+ min",      norm: 0.96 },
+
+    ],
+
+    browser: [
+
+      { label: "Tab switch",           sublabel: "under 2 min",  norm: 0.58 },
+
+      { label: "Short browse",         sublabel: "2 \u2013 10 min",  norm: 0.72 },
+
+      { label: "Deep rabbit hole",     sublabel: "10+ min",      norm: 0.84 },
+
+    ],
+
+    environment: [
+
+      { label: "Brief interruption",   sublabel: "under 2 min",  norm: 0.50 },
+
+      { label: "Conversation",         sublabel: "2 \u2013 10 min",  norm: 0.63 },
+
+      { label: "Extended distraction", sublabel: "10+ min",      norm: 0.74 },
+
+    ],
+
+  };
+
+
+
+  var pendingFrictionKind = null;
+
+
+
   /** Seconds spent in each band: Deep, Focused, Neutral, Distracted. */
 
   var bucketSeconds = [0, 0, 0, 0];
@@ -952,13 +1000,15 @@
 
     if (state === "idle") return;
 
-    var endedDur = totalSeconds;
+    var endedDur    = totalSeconds;
 
-    var endedStart = sessionStartTime;
+    var endedStart  = sessionStartTime;
 
-    var endedFocus = computeFocusScore();
+    var endedFocus  = computeFocusScore();
 
-    var endedDist = distractionCount;
+    var endedDist   = distractionCount;
+
+    var endedBuckets = bucketSeconds;
 
 
 
@@ -1058,11 +1108,31 @@
 
     buildChart(document.getElementById("stability-chart"));
 
+    if (endedDur > 0) {
+
+      showSessionSummary({
+
+        duration:     endedDur,
+
+        focusScore:   endedFocus,
+
+        distractions: endedDist,
+
+        buckets:      endedBuckets,
+
+        startDate:    endedStart,
+
+      });
+
+    }
+
   }
 
 
 
   function openFrictionDialog() {
+
+    showFrictionStep1();
 
     var dlg = document.getElementById("friction-dialog");
 
@@ -1074,9 +1144,281 @@
 
   function closeFrictionDialog() {
 
+    pendingFrictionKind = null;
+
     var dlg = document.getElementById("friction-dialog");
 
     if (dlg && typeof dlg.close === "function") dlg.close();
+
+  }
+
+
+
+  function showFrictionStep1() {
+
+    pendingFrictionKind = null;
+
+    var s1 = document.getElementById("friction-step-1");
+
+    var s2 = document.getElementById("friction-step-2");
+
+    if (s1) s1.removeAttribute("hidden");
+
+    if (s2) s2.setAttribute("hidden", "");
+
+  }
+
+
+
+  function showFrictionStep2(kind) {
+
+    var durations = FRICTION_DURATIONS[kind];
+
+    if (!durations) {
+
+      recordFriction(kind);
+
+      closeFrictionDialog();
+
+      return;
+
+    }
+
+
+
+    var container = document.getElementById("friction-duration-options");
+
+    if (container) {
+
+      while (container.firstChild) container.removeChild(container.firstChild);
+
+      var i;
+
+      for (i = 0; i < durations.length; i++) {
+
+        var opt = durations[i];
+
+        var btn = document.createElement("button");
+
+        btn.type = "button";
+
+        btn.className = "friction-duration-btn";
+
+        btn.setAttribute("data-friction-norm", String(opt.norm));
+
+
+
+        var lbl = document.createElement("span");
+
+        lbl.className = "friction-duration-btn__label";
+
+        lbl.textContent = opt.label;
+
+
+
+        var sub = document.createElement("span");
+
+        sub.className = "friction-duration-btn__sub";
+
+        sub.textContent = opt.sublabel;
+
+
+
+        btn.appendChild(lbl);
+
+        btn.appendChild(sub);
+
+        container.appendChild(btn);
+
+      }
+
+    }
+
+
+
+    var s1 = document.getElementById("friction-step-1");
+
+    var s2 = document.getElementById("friction-step-2");
+
+    if (s1) s1.setAttribute("hidden", "");
+
+    if (s2) s2.removeAttribute("hidden");
+
+  }
+
+
+
+  // ─── Session summary modal ─────────────────────────────────────────────────────
+
+
+
+  function formatSessionDate(d) {
+
+    if (!d) return "";
+
+    var days   = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+    var months = ["January","February","March","April","May","June","July",
+
+                  "August","September","October","November","December"];
+
+    return days[d.getDay()] + ", " + months[d.getMonth()] + " " + d.getDate();
+
+  }
+
+
+
+  function focusScoreColor(score) {
+
+    if (score >= 4.0) return "var(--deep)";
+
+    if (score >= 3.0) return "var(--focused)";
+
+    if (score >= 2.0) return "var(--neutral)";
+
+    return "var(--distracted)";
+
+  }
+
+
+
+  function showSessionSummary(data) {
+
+    var dlg = document.getElementById("session-summary-dialog");
+
+    if (!dlg || typeof dlg.showModal !== "function") return;
+
+
+
+    var dateEl  = document.getElementById("summary-modal-date");
+
+    var scoreEl = document.getElementById("summary-modal-score");
+
+    var durEl   = document.getElementById("summary-modal-duration");
+
+    var distEl  = document.getElementById("summary-modal-distractions");
+
+
+
+    if (dateEl) dateEl.textContent = formatSessionDate(data.startDate);
+
+    if (durEl)  durEl.textContent  = formatDurationHMS(data.duration);
+
+    if (distEl) distEl.textContent = String(data.distractions);
+
+
+
+    if (scoreEl) {
+
+      var fs = data.focusScore;
+
+      if (fs !== null && data.duration > 0) {
+
+        scoreEl.textContent  = fs.toFixed(1) + " / 5";
+
+        scoreEl.style.color  = focusScoreColor(fs);
+
+      } else {
+
+        scoreEl.textContent = "\u2014 / 5";
+
+        scoreEl.style.color = "";
+
+      }
+
+    }
+
+
+
+    var distContainer = document.getElementById("summary-modal-distribution");
+
+    if (distContainer) {
+
+      while (distContainer.firstChild) distContainer.removeChild(distContainer.firstChild);
+
+      var buckets = data.buckets || [0, 0, 0, 0];
+
+      var total   = buckets[0] + buckets[1] + buckets[2] + buckets[3];
+
+      var bands   = [
+
+        { label: "Deep",       color: "var(--deep)",       idx: 0 },
+
+        { label: "Focused",    color: "var(--focused)",    idx: 1 },
+
+        { label: "Neutral",    color: "var(--neutral)",    idx: 2 },
+
+        { label: "Distracted", color: "var(--distracted)", idx: 3 },
+
+      ];
+
+      var bi;
+
+      for (bi = 0; bi < bands.length; bi++) {
+
+        var band = bands[bi];
+
+        var sec  = buckets[band.idx];
+
+        var pct  = total > 0 ? (sec / total) * 100 : 0;
+
+
+
+        var row = document.createElement("div");
+
+        row.className = "summary-dist__row";
+
+
+
+        var labelEl = document.createElement("span");
+
+        labelEl.className   = "summary-dist__label";
+
+        labelEl.textContent = band.label;
+
+
+
+        var track = document.createElement("div");
+
+        track.className = "summary-dist__track";
+
+
+
+        var fill = document.createElement("div");
+
+        fill.className        = "summary-dist__fill";
+
+        fill.style.width      = pct.toFixed(1) + "%";
+
+        fill.style.background = band.color;
+
+
+
+        var timeEl = document.createElement("span");
+
+        timeEl.className   = "summary-dist__time";
+
+        timeEl.textContent = formatClockMmSs(sec);
+
+
+
+        track.appendChild(fill);
+
+        row.appendChild(labelEl);
+
+        row.appendChild(track);
+
+        row.appendChild(timeEl);
+
+        distContainer.appendChild(row);
+
+      }
+
+    }
+
+
+
+    dlg.showModal();
 
   }
 
@@ -1174,23 +1516,81 @@
 
     if (dlg) {
 
+      // Step 1: choosing the friction type advances to step 2
+
       dlg.querySelectorAll("[data-friction-kind]").forEach(function (btn) {
 
         btn.addEventListener("click", function () {
 
-          var kind = btn.getAttribute("data-friction-kind");
+          pendingFrictionKind = btn.getAttribute("data-friction-kind");
 
-          recordFriction(kind);
-
-          closeFrictionDialog();
+          showFrictionStep2(pendingFrictionKind);
 
         });
 
       });
 
+
+
+      // Step 2: duration selection (event delegation on the container)
+
+      var durationContainer = document.getElementById("friction-duration-options");
+
+      if (durationContainer) {
+
+        durationContainer.addEventListener("click", function (e) {
+
+          var target = e.target;
+
+          while (target && target !== durationContainer) {
+
+            if (target.hasAttribute("data-friction-norm")) break;
+
+            target = target.parentNode;
+
+          }
+
+          if (!target || !target.hasAttribute("data-friction-norm")) return;
+
+          var norm = parseFloat(target.getAttribute("data-friction-norm"));
+
+          if (pendingFrictionKind) recordFriction(pendingFrictionKind, norm);
+
+          closeFrictionDialog();
+
+        });
+
+      }
+
+
+
+      var backBtn = document.getElementById("friction-dialog-back");
+
+      if (backBtn) backBtn.addEventListener("click", showFrictionStep1);
+
+
+
       var cancel = document.getElementById("friction-dialog-cancel");
 
       if (cancel) cancel.addEventListener("click", closeFrictionDialog);
+
+    }
+
+
+
+    // Session summary: done button dismisses the modal
+
+    var summaryDone = document.getElementById("session-summary-done");
+
+    if (summaryDone) {
+
+      summaryDone.addEventListener("click", function () {
+
+        var summaryDlg = document.getElementById("session-summary-dialog");
+
+        if (summaryDlg && typeof summaryDlg.close === "function") summaryDlg.close();
+
+      });
 
     }
 

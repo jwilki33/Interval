@@ -275,38 +275,74 @@
 
     <dialog id="friction-dialog" class="friction-dialog" aria-labelledby="friction-dialog-title">
       <div class="friction-dialog__inner">
-        <h3 class="friction-dialog__title" id="friction-dialog-title">What pulled you away?</h3>
-        <p class="friction-dialog__hint">Choose one. The stability curve and summary update from your choice.</p>
-        <div class="friction-dialog__options">
-          <button type="button" class="friction-option" data-friction-kind="phone">
-            <span class="friction-option__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V5a2 2 0 012-2z" />
-              </svg>
-            </span>
-            <span class="friction-option__label">Phone</span>
-          </button>
-          <button type="button" class="friction-option" data-friction-kind="browser">
-            <span class="friction-option__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <path d="M8 12l3 3 5-6" />
-              </svg>
-            </span>
-            <span class="friction-option__label">Browser drift</span>
-          </button>
-          <button type="button" class="friction-option" data-friction-kind="environment">
-            <span class="friction-option__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 2C8.5 2 6 4.7 6 8c0 5 6 12 6 12s6-7 6-12c0-3.3-2.5-6-6-6zm0 9a3 3 0 110-6 3 3 0 010 6z"
-                />
-              </svg>
-            </span>
-            <span class="friction-option__label">Environmental distractions</span>
-          </button>
+
+        <!-- Step 1: choose distraction type -->
+        <div id="friction-step-1">
+          <h3 class="friction-dialog__title" id="friction-dialog-title">What pulled you away?</h3>
+          <p class="friction-dialog__hint">Choose one — you'll refine it on the next screen.</p>
+          <div class="friction-dialog__options">
+            <button type="button" class="friction-option" data-friction-kind="phone">
+              <span class="friction-option__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V5a2 2 0 012-2z" />
+                </svg>
+              </span>
+              <span class="friction-option__label">Phone</span>
+            </button>
+            <button type="button" class="friction-option" data-friction-kind="browser">
+              <span class="friction-option__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M8 12l3 3 5-6" />
+                </svg>
+              </span>
+              <span class="friction-option__label">Browser drift</span>
+            </button>
+            <button type="button" class="friction-option" data-friction-kind="environment">
+              <span class="friction-option__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C8.5 2 6 4.7 6 8c0 5 6 12 6 12s6-7 6-12c0-3.3-2.5-6-6-6zm0 9a3 3 0 110-6 3 3 0 010 6z" />
+                </svg>
+              </span>
+              <span class="friction-option__label">Environmental distractions</span>
+            </button>
+          </div>
+          <button type="button" class="friction-dialog__cancel" id="friction-dialog-cancel">Cancel</button>
         </div>
-        <button type="button" class="btn-secondary friction-dialog__cancel" id="friction-dialog-cancel">Cancel</button>
+
+        <!-- Step 2: how long? (populated by JS) -->
+        <div id="friction-step-2" hidden>
+          <button type="button" class="friction-dialog__back" id="friction-dialog-back" aria-label="Back to distraction type">&#8592; Back</button>
+          <h3 class="friction-dialog__title" id="friction-step-2-title">How long were you pulled away?</h3>
+          <p class="friction-dialog__hint">Your answer scales the curve impact proportionally — a quick glance barely moves it; a long detour reflects the full cost.</p>
+          <div class="friction-dialog__duration-options" id="friction-duration-options"></div>
+        </div>
+
+      </div>
+    </dialog>
+
+    <dialog id="session-summary-dialog" class="session-summary-dialog" aria-labelledby="session-summary-title">
+      <div class="session-summary__inner">
+        <p class="session-summary__date" id="summary-modal-date"></p>
+        <h2 class="session-summary__heading" id="session-summary-title">Session Complete</h2>
+        <div class="session-summary__scores">
+          <div class="session-summary__score-block">
+            <span class="session-summary__score-value" id="summary-modal-score">—</span>
+            <span class="session-summary__score-label">Focus Score</span>
+          </div>
+          <div class="session-summary__score-divider" aria-hidden="true"></div>
+          <div class="session-summary__score-block">
+            <span class="session-summary__score-value" id="summary-modal-duration">—</span>
+            <span class="session-summary__score-label">Duration</span>
+          </div>
+          <div class="session-summary__score-divider" aria-hidden="true"></div>
+          <div class="session-summary__score-block">
+            <span class="session-summary__score-value" id="summary-modal-distractions">—</span>
+            <span class="session-summary__score-label">Distractions</span>
+          </div>
+        </div>
+        <div class="session-summary__dist-wrap" id="summary-modal-distribution"></div>
+        <button type="button" class="btn-primary session-summary__done" id="session-summary-done">Done</button>
       </div>
     </dialog>
     <script src="js/profile.js"></script>
