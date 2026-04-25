@@ -598,8 +598,10 @@ html[data-reduced-motion="reduce"] *::after {
 
 .stability-chart__axis-y {
   fill: var(--text-muted);
-  font-size: var(--font-caption);
   font-family: var(--font-mono);
+  letter-spacing: 0.07em;
+  /* font-size is set as an SVG attribute (8.5 user units) so it scales
+     proportionally with the viewBox rather than staying fixed in CSS px */
 }
 
 .stability-chart__axis-x {

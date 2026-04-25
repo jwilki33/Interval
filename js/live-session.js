@@ -211,7 +211,7 @@
 
   var W = 600, H = 280;
 
-  var PAD_L = 80, PAD_R = 20, PAD_T = 20, PAD_B = 36;
+  var PAD_L = 72, PAD_R = 20, PAD_T = 20, PAD_B = 36;
 
   var CHART_W = W - PAD_L - PAD_R;
 
@@ -283,39 +283,54 @@
 
 
 
-    // ── Y-axis grid + labels ──────────────────────────────────────────────────
+    // ── Y-axis: separator lines at actual band boundaries, labels at zone centers ─
 
-    var labelsY = ["Deep", "Focused", "Neutral", "Distracted"];
+    // Separators match normToBand() thresholds: 0.25, 0.50, 0.75.
+    // Labels sit mid-zone so each word clearly names the region it's inside.
 
-    for (var ly = 0; ly < 4; ly++) {
+    var BAND_SEP    = [0.25, 0.50, 0.75];
+    var BAND_CTR    = [0.125, 0.375, 0.625, 0.875];
+    var labelsY     = ["DEEP", "FOCUSED", "NEUTRAL", "DISTRACTED"];
 
-      var yy = PAD_T + (CHART_H * ly) / 3;
+    var bi;
 
+    for (bi = 0; bi < BAND_SEP.length; bi++) {
 
+      var byy = PAD_T + CHART_H * BAND_SEP[bi];
 
-      var gt = document.createElementNS(NS, "line");
+      var bgt = document.createElementNS(NS, "line");
 
-      gt.setAttribute("x1", PAD_L); gt.setAttribute("y1", yy);
+      bgt.setAttribute("x1", PAD_L); bgt.setAttribute("y1", byy.toFixed(1));
 
-      gt.setAttribute("x2", PAD_L + CHART_W); gt.setAttribute("y2", yy);
+      bgt.setAttribute("x2", PAD_L + CHART_W); bgt.setAttribute("y2", byy.toFixed(1));
 
-      gt.setAttribute("class", "stability-chart__grid" + (ly === 2 ? " stability-chart__grid--mid" : ""));
+      bgt.setAttribute("class", "stability-chart__grid" + (bi === 1 ? " stability-chart__grid--mid" : ""));
 
-      svg.appendChild(gt);
+      svg.appendChild(bgt);
 
+    }
 
+    var li;
+
+    for (li = 0; li < 4; li++) {
+
+      var lyy = PAD_T + CHART_H * BAND_CTR[li];
 
       var lbl = document.createElementNS(NS, "text");
 
-      lbl.setAttribute("x", PAD_L - 10);
+      lbl.setAttribute("x", PAD_L - 8);
 
-      lbl.setAttribute("y", yy + 4);
+      lbl.setAttribute("y", lyy.toFixed(1));
 
       lbl.setAttribute("text-anchor", "end");
 
+      lbl.setAttribute("dominant-baseline", "middle");
+
+      lbl.setAttribute("font-size", "8.5");
+
       lbl.setAttribute("class", "stability-chart__axis-y");
 
-      lbl.textContent = labelsY[ly];
+      lbl.textContent = labelsY[li];
 
       svg.appendChild(lbl);
 

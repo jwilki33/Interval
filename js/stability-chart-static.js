@@ -7,7 +7,7 @@
 
   var W = 600;
   var H = 280;
-  var PAD_L = 80;
+  var PAD_L = 72;
   var PAD_R = 20;
   var PAD_T = 20;
   var PAD_B = 36;
@@ -93,24 +93,32 @@
     svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
     while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-    var labelsY = ["Deep", "Focused", "Neutral", "Distracted"];
-    var ly;
-    for (ly = 0; ly < 4; ly++) {
-      var yy = PAD_T + (CHART_H * ly) / 3;
-      var gt = document.createElementNS(NS, "line");
-      gt.setAttribute("x1", PAD_L);
-      gt.setAttribute("y1", yy);
-      gt.setAttribute("x2", PAD_L + CHART_W);
-      gt.setAttribute("y2", yy);
-      gt.setAttribute("class", "stability-chart__grid" + (ly === 2 ? " stability-chart__grid--mid" : ""));
-      svg.appendChild(gt);
+    var BAND_SEP = [0.25, 0.50, 0.75];
+    var BAND_CTR = [0.125, 0.375, 0.625, 0.875];
+    var labelsY  = ["DEEP", "FOCUSED", "NEUTRAL", "DISTRACTED"];
+    var bi, li;
 
+    for (bi = 0; bi < BAND_SEP.length; bi++) {
+      var byy = PAD_T + CHART_H * BAND_SEP[bi];
+      var bgt = document.createElementNS(NS, "line");
+      bgt.setAttribute("x1", PAD_L);
+      bgt.setAttribute("y1", byy.toFixed(1));
+      bgt.setAttribute("x2", PAD_L + CHART_W);
+      bgt.setAttribute("y2", byy.toFixed(1));
+      bgt.setAttribute("class", "stability-chart__grid" + (bi === 1 ? " stability-chart__grid--mid" : ""));
+      svg.appendChild(bgt);
+    }
+
+    for (li = 0; li < 4; li++) {
+      var lyy = PAD_T + CHART_H * BAND_CTR[li];
       var lbl = document.createElementNS(NS, "text");
-      lbl.setAttribute("x", PAD_L - 10);
-      lbl.setAttribute("y", yy + 4);
+      lbl.setAttribute("x", PAD_L - 8);
+      lbl.setAttribute("y", lyy.toFixed(1));
       lbl.setAttribute("text-anchor", "end");
+      lbl.setAttribute("dominant-baseline", "middle");
+      lbl.setAttribute("font-size", "8.5");
       lbl.setAttribute("class", "stability-chart__axis-y");
-      lbl.textContent = labelsY[ly];
+      lbl.textContent = labelsY[li];
       svg.appendChild(lbl);
     }
 
