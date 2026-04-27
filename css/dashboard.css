@@ -133,7 +133,7 @@
   }
 }
 
-/* Guide page — 3-column grid (mockup: goal | recommendations + preset | focus + log) */
+/* Guide page — 2-column grid: goal list | stacked panels */
 .main--guide {
   flex: 1;
   min-height: 0;
@@ -145,8 +145,8 @@
 
 .guide-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  grid-template-rows: auto auto 1fr;
   gap: 1rem;
   flex: 1;
   min-height: 0;
@@ -163,19 +163,14 @@
   grid-row: 1;
 }
 
-.guide-panel--preset {
+.guide-panel--streak {
   grid-column: 2;
   grid-row: 2;
 }
 
-.guide-panel--focus {
-  grid-column: 3;
-  grid-row: 1;
-}
-
-.guide-panel--distractions {
-  grid-column: 3;
-  grid-row: 2;
+.guide-panel--quickstart {
+  grid-column: 2;
+  grid-row: 3;
 }
 
 .guide-panel {
@@ -242,7 +237,7 @@
 
 .guide-panel__numbered {
   margin: 0;
-  padding-left: 1.1rem;
+  padding-left: 1.5rem;
 }
 
 .guide-panel__numbered li {
@@ -318,6 +313,64 @@
   gap: 0.75rem;
 }
 
+/* Streak panel */
+.guide-panel__body--streak {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.streak-stats {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+
+.streak-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.streak-stat__value {
+  font-family: var(--font-sans);
+  font-size: 2rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.streak-stat__label {
+  font-size: calc(var(--font-caption) * 0.92);
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* Quick-start steps */
+.guide-panel__steps {
+  margin: 0;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.guide-panel__steps li {
+  line-height: 1.45;
+  color: var(--text-muted);
+  padding-left: 0.25rem;
+}
+
+.guide-panel__steps strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
 .goal-form__intro {
   margin: 0;
   font-size: var(--font-caption);
@@ -367,12 +420,15 @@
 .goal-form__deadlines {
   margin: 0;
   padding: 0.5rem 0.65rem;
-  border: 1px solid var(--border-subtle);
+  border: none;
   border-radius: var(--radius-card);
   background: var(--surface-elevated);
+  box-shadow: var(--shadow-sm);
 }
 
 .goal-form__legend {
+  float: left;
+  width: 100%;
   padding: 0;
   margin: 0 0 0.4rem;
   font-size: calc(var(--font-caption) * 0.95);
@@ -595,7 +651,7 @@
   margin-top: 0.5rem;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 860px) {
   .guide-grid {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -604,9 +660,8 @@
 
   .guide-panel--goal,
   .guide-panel--recommendations,
-  .guide-panel--preset,
-  .guide-panel--focus,
-  .guide-panel--distractions {
+  .guide-panel--streak,
+  .guide-panel--quickstart {
     grid-column: 1;
     grid-row: auto;
   }

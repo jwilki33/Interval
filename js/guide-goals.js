@@ -140,6 +140,7 @@
           goals[j].completed = cb.checked;
           save(goals);
           render();
+          renderStreak();
           return;
         }
       }
@@ -200,6 +201,51 @@
       });
     }
     save(goals);
+  }
+
+  // ── Goal streak + stats ───────────────────────────────────────────────────────
+
+  function computeStreak(goals) {
+    if (!goals || goals.length === 0) return { streak: 0, rate: 0, total: 0 };
+
+    var total = goals.length;
+    var completed = 0;
+    var i;
+    var dateSet = {};
+    for (i = 0; i < goals.length; i++) {
+      if (goals[i].completed) completed++;
+      dateSet[goals[i].dateKey] = true;
+    }
+
+    var streak = 0;
+    var d = new Date();
+    // If today has no goal yet, start counting from yesterday
+    if (!dateSet[dateKey(d)]) {
+      d.setDate(d.getDate() - 1);
+    }
+    while (dateSet[dateKey(d)]) {
+      streak++;
+      d.setDate(d.getDate() - 1);
+    }
+
+    return {
+      streak: streak,
+      rate: Math.round((completed / total) * 100),
+      total: total
+    };
+  }
+
+  function renderStreak() {
+    var streakEl = document.getElementById("streak-current");
+    var rateEl   = document.getElementById("streak-rate");
+    var totalEl  = document.getElementById("streak-total");
+    if (!streakEl && !rateEl && !totalEl) return;
+
+    var stats = computeStreak(load());
+    if (streakEl) streakEl.textContent = stats.streak;
+    if (rateEl)   rateEl.textContent   = stats.total > 0 ? stats.rate + "%" : "—";
+    if (totalEl)  totalEl.textContent  = stats.total > 0 ? stats.total : "—";
+    if (streakEl) streakEl.textContent = stats.total > 0 ? stats.streak : "—";
   }
 
   // ── Personalised recommendations from self-assessment ────────────────────────
@@ -345,9 +391,11 @@
       var deadline = checked && checked.value === "week" ? "week" : "session";
       upsertToday(input ? input.value : "", deadline);
       render();
+      renderStreak();
     });
 
     render();
     renderRecommendations();
+    renderStreak();
   });
 })();

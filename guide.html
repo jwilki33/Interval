@@ -145,25 +145,35 @@
             </div>
           </section>
 
-          <section class="card guide-panel guide-panel--focus" aria-labelledby="guide-focus-heading">
-            <h2 class="guide-panel__title" id="guide-focus-heading">Focus State</h2>
-            <div class="guide-panel__body">
-              <p>The four bands used across the stability curve and calendar.</p>
-              <ul class="guide-panel__legend">
-                <li><span class="guide-panel__swatch guide-panel__swatch--deep"></span> Deep — steady, on-task</li>
-                <li><span class="guide-panel__swatch guide-panel__swatch--focused"></span> Focused — engaged with mild drift</li>
-                <li><span class="guide-panel__swatch guide-panel__swatch--neutral"></span> Neutral — attention is split</li>
-                <li><span class="guide-panel__swatch guide-panel__swatch--distracted"></span> Distracted — pulled away</li>
-              </ul>
+          <section class="card guide-panel guide-panel--streak" aria-labelledby="guide-streak-heading">
+            <h2 class="guide-panel__title" id="guide-streak-heading">Goal Streak</h2>
+            <div class="guide-panel__body guide-panel__body--streak">
+              <div class="streak-stats">
+                <div class="streak-stat">
+                  <span class="streak-stat__value" id="streak-current">—</span>
+                  <span class="streak-stat__label">day streak</span>
+                </div>
+                <div class="streak-stat">
+                  <span class="streak-stat__value" id="streak-rate">—</span>
+                  <span class="streak-stat__label">completed</span>
+                </div>
+                <div class="streak-stat">
+                  <span class="streak-stat__value" id="streak-total">—</span>
+                  <span class="streak-stat__label">logged</span>
+                </div>
+              </div>
             </div>
           </section>
 
-          <section class="card guide-panel guide-panel--distractions" aria-labelledby="guide-dist-heading">
-            <h2 class="guide-panel__title" id="guide-dist-heading">Distraction Log</h2>
+          <section class="card guide-panel guide-panel--quickstart" aria-labelledby="guide-qs-heading">
+            <h2 class="guide-panel__title" id="guide-qs-heading">How to Run a Session</h2>
             <div class="guide-panel__body">
-              <p>
-                Each friction flag you tap — phone, browser drift, or noise — is logged here and nudges the stability curve.
-              </p>
+              <ol class="guide-panel__steps">
+                <li><strong>Set your goal.</strong> Log one concrete thing above before opening the Tracker.</li>
+                <li><strong>Start.</strong> Press Start Session — the stability curve begins recording immediately.</li>
+                <li><strong>Flag distractions.</strong> Tap Friction the moment something pulls you away, not after.</li>
+                <li><strong>End and review.</strong> Press End Session to see your focus score and time breakdown.</li>
+              </ol>
             </div>
           </section>
         </div>
