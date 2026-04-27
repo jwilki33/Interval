@@ -22,6 +22,8 @@
           else if (motion === "full") reduce = false;
           else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) reduce = true;
           if (reduce) document.documentElement.setAttribute("data-reduced-motion", "reduce");
+          var nl = localStorage.getItem("interval_nav_layout");
+          if (nl === "top") document.documentElement.setAttribute("data-nav-layout", "top");
         } catch (e) {}
       })();
     </script>
@@ -163,6 +165,14 @@
                 </div>
               </div>
 
+              <div class="settings-field-group settings-field-group--row">
+                <span class="settings-field-label">Navigation</span>
+                <div class="settings-toggle-group" role="group" aria-label="Navigation layout">
+                  <button class="settings-toggle-btn" data-nav-layout="left" type="button">Left</button>
+                  <button class="settings-toggle-btn" data-nav-layout="top" type="button">Top</button>
+                </div>
+              </div>
+
             </section>
 
             <!-- Profile -->
@@ -224,5 +234,6 @@
     <script src="js/sidebar-brand.js" defer></script>
     <script src="js/session-calendar.js" defer></script>
     <script src="js/settings-page.js" defer></script>
+    <script src="js/nav-layout.js" defer></script>
   </body>
 </html>

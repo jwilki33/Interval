@@ -111,6 +111,37 @@
     }
   }
 
+  // ── Navigation layout toggle ──────────────────────────────────────────────────
+
+  function syncNavLayoutButtons() {
+    var stored = localStorage.getItem("interval_nav_layout") || "left";
+    var btns = document.querySelectorAll("[data-nav-layout]");
+    for (var i = 0; i < btns.length; i++) {
+      var isActive = btns[i].getAttribute("data-nav-layout") === stored;
+      if (isActive) btns[i].classList.add("settings-toggle-btn--active");
+      else           btns[i].classList.remove("settings-toggle-btn--active");
+    }
+  }
+
+  function wireNavLayout() {
+    var btns = document.querySelectorAll("[data-nav-layout]");
+    for (var i = 0; i < btns.length; i++) {
+      (function (btn) {
+        btn.addEventListener("click", function () {
+          var layout = btn.getAttribute("data-nav-layout");
+          try { localStorage.setItem("interval_nav_layout", layout); } catch (e) {}
+          if (layout === "top") {
+            document.documentElement.setAttribute("data-nav-layout", "top");
+          } else {
+            document.documentElement.removeAttribute("data-nav-layout");
+          }
+          syncNavLayoutButtons();
+        });
+      })(btns[i]);
+    }
+    syncNavLayoutButtons();
+  }
+
   // ── Retake self-assessment ────────────────────────────────────────────────────
 
   function wireRetake() {
@@ -127,6 +158,7 @@
     populateProfile();
     wireTextScale();
     wireTrackingMode();
+    wireNavLayout();
     wireDataButtons();
     wireRetake();
   });
