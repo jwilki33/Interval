@@ -24,6 +24,8 @@
           if (reduce) document.documentElement.setAttribute("data-reduced-motion", "reduce");
           var nl = localStorage.getItem("interval_nav_layout");
           if (nl === "top") document.documentElement.setAttribute("data-nav-layout", "top");
+          var tm = localStorage.getItem("interval_tracking_mode");
+          if (tm === "active") document.documentElement.setAttribute("data-tracking-mode", "active");
         } catch (e) {}
       })();
     </script>
@@ -96,7 +98,6 @@
           <h1 class="main__title">Tracker</h1>
           <div class="main__header-spacer"></div>
           <div class="header-actions">
-            <button type="button" class="btn-secondary" id="hr-connect-btn" aria-pressed="false">Connect HR Monitor</button>
             <button type="button" class="btn-primary" id="session-toggle-btn">Start Session</button>
           </div>
           <div class="header-meta">
@@ -122,12 +123,33 @@
             </div>
           </section>
 
-          <section class="card cell-distraction" aria-labelledby="distraction-heading">
+          <!-- Reflective mode: manual distraction log -->
+          <section class="card cell-distraction mode--reflective-only" aria-labelledby="distraction-heading">
             <h2 class="card__title" id="distraction-heading">Distraction Log</h2>
-            <p class="card__hint" id="distraction-mode-hint">Reflective mode: you record what pulled you away.</p>
+            <p class="card__hint">Reflective mode — you record what pulled you away.</p>
             <ul id="distraction-log" class="distraction-list" aria-live="polite" aria-relevant="additions">
               <li class="distraction-list__empty" id="distraction-log-empty">No distractions logged yet.</li>
             </ul>
+          </section>
+
+          <!-- Active mode: heart rate panel -->
+          <section class="card cell-distraction mode--active-only" aria-labelledby="active-hr-heading">
+            <h2 class="card__title" id="active-hr-heading">Heart Rate</h2>
+            <div class="hr-panel">
+              <div class="hr-panel__live">
+                <span class="hr-panel__bpm-value" id="hr-panel-bpm">--</span>
+                <span class="hr-panel__bpm-unit">bpm</span>
+              </div>
+              <div class="hr-panel__meta">
+                Baseline &nbsp;<span id="hr-baseline-value">--</span> bpm
+              </div>
+              <div class="hr-panel__status-row">
+                <span class="hr-status-dot" id="hr-status-dot"></span>
+                <span id="hr-status-label">Not connected</span>
+              </div>
+              <button type="button" class="btn-secondary" id="hr-connect-btn" aria-pressed="false">Connect HR Monitor</button>
+              <p class="hr-panel__hint">Focus is inferred from HR steadiness. Sustained spikes above your rolling baseline automatically move the stability curve — no manual logging needed.</p>
+            </div>
           </section>
 
           <section class="card cell-session" aria-labelledby="session-summary-heading">
@@ -142,7 +164,10 @@
                 <span class="summary-lines__value" id="summary-focus-score">— / 5</span>
               </div>
               <div class="summary-lines__row">
-                <span class="summary-lines__label">Distractions</span>
+                <span class="summary-lines__label">
+                  <span class="mode--reflective-only">Distractions</span>
+                  <span class="mode--active-only">HR Spikes</span>
+                </span>
                 <span class="summary-lines__value" id="summary-distractions">0</span>
               </div>
             </div>
@@ -198,7 +223,8 @@
             </div>
           </section>
 
-          <section class="card cell-friction" aria-labelledby="friction-heading">
+          <!-- Reflective mode: friction flag button -->
+          <section class="card cell-friction mode--reflective-only" aria-labelledby="friction-heading">
             <h2 class="card__title card__title--sr-only" id="friction-heading">Report friction</h2>
             <button
               type="button"
@@ -210,6 +236,17 @@
             >
               Friction Flag
             </button>
+          </section>
+
+          <!-- Active mode: HR tracking status -->
+          <section class="card cell-friction mode--active-only" aria-labelledby="hr-active-heading">
+            <h2 class="card__title card__title--sr-only" id="hr-active-heading">Active tracking status</h2>
+            <div class="hr-active-status">
+              <svg class="hr-active-status__ecg" viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 12h8l3-8 5 16 4-10 3 6H46" />
+              </svg>
+              <span class="hr-active-status__label">Spike detection active after 2 min warmup</span>
+            </div>
           </section>
         </div>
       </div>
@@ -280,7 +317,10 @@
           <div class="session-summary__score-divider" aria-hidden="true"></div>
           <div class="session-summary__score-block">
             <span class="session-summary__score-value" id="summary-modal-distractions">—</span>
-            <span class="session-summary__score-label">Distractions</span>
+            <span class="session-summary__score-label">
+              <span class="mode--reflective-only">Distractions</span>
+              <span class="mode--active-only">HR Spikes</span>
+            </span>
           </div>
         </div>
         <div class="session-summary__dist-wrap" id="summary-modal-distribution"></div>

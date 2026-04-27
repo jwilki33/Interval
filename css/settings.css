@@ -325,3 +325,10 @@
   gap: 0.55rem;
   align-items: flex-start;
 }
+
+.settings-mode-desc {
+  margin: 0.65rem 0 0;
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+  line-height: 1.55;
+}

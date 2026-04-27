@@ -206,11 +206,17 @@
             <!-- Tracking -->
             <section class="card settings-section" aria-labelledby="settings-tracking-heading">
               <h2 class="settings-section__title" id="settings-tracking-heading">Tracking</h2>
-              <p class="settings-section__desc">Default mode applied when you start a new session.</p>
+              <p class="settings-section__desc">Choose how sessions measure your focus.</p>
               <div class="settings-toggle-group settings-toggle-group--tracking" role="group" aria-label="Tracking mode">
                 <button class="settings-toggle-btn settings-toggle-btn--active" data-tracking-mode="reflective" type="button">Reflective</button>
                 <button class="settings-toggle-btn" data-tracking-mode="active" type="button">Active</button>
               </div>
+              <p class="settings-mode-desc settings-mode-desc--reflective">
+                You manually flag distractions during a session. The friction log and distraction count give you a self-reported picture of your focus.
+              </p>
+              <p class="settings-mode-desc settings-mode-desc--active">
+                Your heart rate drives the stability curve automatically. Sustained spikes above your baseline register as focus disruptions — no flagging needed. Requires a Bluetooth HR monitor.
+              </p>
             </section>
 
             <!-- Data -->
@@ -229,6 +235,60 @@
         </div>
       </div>
     </div>
+
+    <dialog id="active-mode-dialog" class="active-mode-dialog" aria-labelledby="active-mode-title">
+      <div class="active-mode-dialog__inner">
+        <h3 class="active-mode-dialog__title" id="active-mode-title">Switch to Active Tracking?</h3>
+        <p class="active-mode-dialog__subtitle">Active mode replaces manual flagging with heart rate monitoring. Here's what that means.</p>
+
+        <div class="active-mode-dialog__sections">
+          <div class="active-mode-section">
+            <div class="active-mode-section__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12h3.5l2-5 3.5 10 3-7 2 4H22" />
+              </svg>
+            </div>
+            <div class="active-mode-section__body">
+              <span class="active-mode-section__heading">What data is used</span>
+              <p class="active-mode-section__text">BPM readings are collected from your Bluetooth heart rate monitor and stored locally on this device. Nothing is sent to any server.</p>
+            </div>
+          </div>
+
+          <div class="active-mode-section">
+            <div class="active-mode-section__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
+              </svg>
+            </div>
+            <div class="active-mode-section__body">
+              <span class="active-mode-section__heading">How focus is calculated</span>
+              <p class="active-mode-section__text">A calm, steady heart rate signals deep focus. When your HR rises more than 15 bpm above your rolling baseline and holds there for 10+ seconds, the stability curve registers it as a disruption — automatically.</p>
+            </div>
+          </div>
+
+          <div class="active-mode-section">
+            <div class="active-mode-section__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <div class="active-mode-section__body">
+              <span class="active-mode-section__heading">Linking a device</span>
+              <p class="active-mode-section__text">Open the Tracker, then press Connect HR. Your browser scans for nearby devices — select yours and wait for the green indicator. Compatible with Polar H10, Garmin HRM-Pro, Wahoo TICKR, Fitbit Charge 5+, and any standard Bluetooth HR monitor.</p>
+              <p class="active-mode-section__note">Requires Chrome or Edge with Bluetooth enabled. Spike detection activates after a 2-minute warmup.</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="active-mode-dialog__divider" />
+
+        <div class="active-mode-dialog__actions">
+          <button type="button" class="btn-secondary" id="active-mode-cancel">Keep Reflective</button>
+          <button type="button" class="btn-primary" id="active-mode-confirm">Enable Active Mode</button>
+        </div>
+      </div>
+    </dialog>
 
     <script src="js/profile.js"></script>
     <script src="js/behavior-tracking.js" defer></script>

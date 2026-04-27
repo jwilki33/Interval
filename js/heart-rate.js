@@ -177,6 +177,8 @@
   function updateBpmDisplay(bpm) {
     var el = document.getElementById("hr-bpm-value");
     if (el) el.textContent = bpm;
+    var panelEl = document.getElementById("hr-panel-bpm");
+    if (panelEl) panelEl.textContent = bpm;
   }
 
   function updateBaselineDisplay() {
@@ -227,6 +229,19 @@
         "class",
         "hr-status-dot hr-status-dot--" + status
       );
+    }
+
+    var statusLabel = document.getElementById("hr-status-label");
+    if (statusLabel) {
+      statusLabel.textContent =
+        status === "connected"   ? "Connected" :
+        status === "connecting"  ? "Connecting\u2026" :
+                                   "Not connected";
+    }
+
+    var panelBpm = document.getElementById("hr-panel-bpm");
+    if (panelBpm && status !== "connected") {
+      panelBpm.textContent = "--";
     }
   }
 

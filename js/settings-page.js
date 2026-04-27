@@ -62,18 +62,60 @@
       if (isActive) btns[i].classList.add("settings-toggle-btn--active");
       else           btns[i].classList.remove("settings-toggle-btn--active");
     }
+    // Sync the mode description paragraphs
+    var descReflective = document.querySelector(".settings-mode-desc--reflective");
+    var descActive     = document.querySelector(".settings-mode-desc--active");
+    if (stored === "active") {
+      if (descReflective) descReflective.hidden = true;
+      if (descActive)     descActive.hidden     = false;
+      document.documentElement.setAttribute("data-tracking-mode", "active");
+    } else {
+      if (descReflective) descReflective.hidden = false;
+      if (descActive)     descActive.hidden     = true;
+      document.documentElement.removeAttribute("data-tracking-mode");
+    }
+  }
+
+  function applyTrackingMode(mode) {
+    try { localStorage.setItem("interval_tracking_mode", mode); } catch (e) {}
+    syncTrackingButtons();
   }
 
   function wireTrackingMode() {
-    var btns = document.querySelectorAll("[data-tracking-mode]");
+    var dlg        = document.getElementById("active-mode-dialog");
+    var confirmBtn = document.getElementById("active-mode-confirm");
+    var cancelBtn  = document.getElementById("active-mode-cancel");
+    var btns       = document.querySelectorAll("[data-tracking-mode]");
+
     for (var i = 0; i < btns.length; i++) {
       (function (btn) {
         btn.addEventListener("click", function () {
-          try { localStorage.setItem("interval_tracking_mode", btn.getAttribute("data-tracking-mode")); } catch (e) {}
-          syncTrackingButtons();
+          var mode    = btn.getAttribute("data-tracking-mode");
+          var current = localStorage.getItem("interval_tracking_mode") || "reflective";
+          if (mode === "active" && current !== "active") {
+            // Show the onboarding dialog — don't apply yet
+            if (dlg && typeof dlg.showModal === "function") dlg.showModal();
+            return;
+          }
+          applyTrackingMode(mode);
         });
       })(btns[i]);
     }
+
+    if (confirmBtn && dlg) {
+      confirmBtn.addEventListener("click", function () {
+        if (typeof dlg.close === "function") dlg.close();
+        applyTrackingMode("active");
+      });
+    }
+
+    if (cancelBtn && dlg) {
+      cancelBtn.addEventListener("click", function () {
+        if (typeof dlg.close === "function") dlg.close();
+        // Keep current mode — no changes
+      });
+    }
+
     syncTrackingButtons();
   }
 

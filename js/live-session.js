@@ -1424,6 +1424,10 @@
 
 
 
+  function isActiveMode() {
+    return document.documentElement.getAttribute("data-tracking-mode") === "active";
+  }
+
   function recordFriction(kind, normOverride) {
 
     if (state !== "running") return;
@@ -1438,7 +1442,9 @@
 
     pushChartPoint(sessionNorm);
 
-    appendDistractionEntry(kind);
+    if (!isActiveMode()) {
+      appendDistractionEntry(kind);
+    }
 
     buildChart(document.getElementById("stability-chart"));
 

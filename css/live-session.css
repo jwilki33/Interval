@@ -1385,3 +1385,235 @@ html[data-nav-layout="top"] .sidebar__footer {
     display: flex;
   }
 }
+
+/* ─── Tracking mode: visibility helpers ──────────────────────────────────────── */
+
+/* Active-only elements are hidden by default (reflective is the default) */
+.mode--active-only {
+  display: none;
+}
+
+html[data-tracking-mode="active"] .mode--reflective-only {
+  display: none;
+}
+
+/* Restore active-only elements by element type */
+html[data-tracking-mode="active"] span.mode--active-only {
+  display: inline;
+}
+
+html[data-tracking-mode="active"] section.mode--active-only {
+  display: flex;
+}
+
+/* ─── Active mode: HR panel ───────────────────────────────────────────────────── */
+
+.hr-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.hr-panel__live {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  padding: 0.35rem 0 0.15rem;
+}
+
+.hr-panel__bpm-value {
+  font-size: 3rem;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.hr-panel__bpm-unit {
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+  padding-bottom: 0.4rem;
+}
+
+.hr-panel__meta {
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+}
+
+.hr-panel__status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+}
+
+.hr-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--text-muted);
+  transition: background 0.25s ease;
+}
+
+.hr-status-dot--connected {
+  background: var(--deep);
+  box-shadow: 0 0 6px var(--deep);
+}
+
+.hr-status-dot--connecting {
+  background: var(--focused);
+}
+
+.hr-status-dot--disconnected {
+  background: var(--text-muted);
+}
+
+.hr-panel__hint {
+  margin: 0;
+  font-size: var(--font-caption);
+  line-height: 1.5;
+  color: var(--text-muted);
+  font-style: italic;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ─── Active mode: HR status cell (replaces friction button) ─────────────────── */
+
+.hr-active-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  flex: 1;
+  text-align: center;
+}
+
+.hr-active-status__ecg {
+  width: 48px;
+  height: 24px;
+  color: var(--deep);
+  opacity: 0.6;
+}
+
+.hr-active-status__label {
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+  line-height: 1.45;
+  max-width: 18ch;
+}
+
+/* ─── Active mode onboarding dialog (in settings) ───────────────────────────── */
+
+.active-mode-dialog {
+  max-width: min(540px, calc(100vw - 2rem));
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.active-mode-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.active-mode-dialog__inner {
+  padding: 1.75rem 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.active-mode-dialog__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.active-mode-dialog__subtitle {
+  margin: 0;
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.active-mode-dialog__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.active-mode-section {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.active-mode-section__icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--deep) 12%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--deep);
+}
+
+.active-mode-section__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.active-mode-section__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+
+.active-mode-section__heading {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.active-mode-section__text {
+  margin: 0;
+  font-size: var(--font-caption);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.active-mode-section__note {
+  margin: 0.2rem 0 0;
+  font-size: calc(var(--font-caption) * 0.9);
+  color: var(--text-muted);
+  opacity: 0.75;
+  font-style: italic;
+}
+
+.active-mode-dialog__divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 0;
+}
+
+.active-mode-dialog__actions {
+  display: flex;
+  gap: 0.65rem;
+  justify-content: flex-end;
+  align-items: center;
+}
