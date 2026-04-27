@@ -98,12 +98,8 @@
           <section class="card guide-panel guide-panel--goal" aria-labelledby="guide-goal-heading">
             <h2 class="guide-panel__title" id="guide-goal-heading">Goal List</h2>
             <div class="guide-panel__body guide-panel__body--goals">
-              <p class="goal-form__intro">
-                Log <strong>one personal goal per day</strong>. Choose when you want it done, then tick it off when it’s finished.
-              </p>
-
               <form id="goal-day-form" class="goal-form" autocomplete="off">
-                <label class="goal-form__label" for="goal-input">Today’s goal</label>
+                <label class="goal-form__label" for="goal-input">Today's goal</label>
                 <input
                   id="goal-input"
                   class="goal-form__input"
@@ -126,7 +122,7 @@
                   </label>
                 </fieldset>
 
-                <button type="submit" class="btn-primary goal-form__submit">Save today’s goal</button>
+                <button type="submit" class="btn-primary goal-form__submit">Save today's goal</button>
               </form>
 
               <p id="goal-form-status" class="goal-form__status" hidden></p>
@@ -147,25 +143,10 @@
             </div>
           </section>
 
-          <section class="card guide-panel guide-panel--preset" aria-labelledby="guide-preset-heading">
-            <h2 class="guide-panel__title" id="guide-preset-heading">Session Preset</h2>
-            <div class="guide-panel__body">
-              <p>
-                A slot for <strong>how</strong> you want to work—length, intent, or structure—before we wire real controls.
-              </p>
-              <dl class="guide-panel__dl">
-                <dt>Reflective (current)</dt>
-                <dd>Open-ended; you control start/stop and log distractions by hand.</dd>
-                <dt>Future ideas</dt>
-                <dd>Timed pomodoro-style blocks, “deep work only” reminders, or active tracking hints.</dd>
-              </dl>
-            </div>
-          </section>
-
           <section class="card guide-panel guide-panel--focus" aria-labelledby="guide-focus-heading">
             <h2 class="guide-panel__title" id="guide-focus-heading">Focus State</h2>
             <div class="guide-panel__body">
-              <p>Same four bands as the stability curve and calendar tinting—read top to bottom as focus slips.</p>
+              <p>The four bands used across the stability curve and calendar.</p>
               <ul class="guide-panel__legend">
                 <li><span class="guide-panel__swatch guide-panel__swatch--deep"></span> Deep — steady, on-task</li>
                 <li><span class="guide-panel__swatch guide-panel__swatch--focused"></span> Focused — engaged with mild drift</li>
@@ -179,12 +160,8 @@
             <h2 class="guide-panel__title" id="guide-dist-heading">Distraction Log</h2>
             <div class="guide-panel__body">
               <p>
-                In <strong>reflective mode</strong>, the log is built from friction flags: phone, browser drift, or environmental noise.
+                Each friction flag you tap — phone, browser drift, or noise — is logged here and nudges the stability curve.
               </p>
-              <p>
-                Each entry nudges the stability curve and counts toward session distractions—so the log matches what you actually felt pulled you away.
-              </p>
-              <p class="guide-panel__note">Active tracking (future) could fill this automatically from screen context.</p>
             </div>
           </section>
         </div>

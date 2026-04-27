@@ -206,68 +206,68 @@
 
   var REC_MAP = {
     q1_phone: {
-      title: "Create distance, not just willpower.",
-      body:  "Before each session, put your phone face-down in another room. Physical distance reduces check-ins far more effectively than resolve alone."
+      title: "Put your phone in another room.",
+      body:  "Physical distance reduces check-ins far more than willpower."
     },
     q1_browser: {
       title: "Close every tab you don\u2019t need before starting.",
-      body:  "Browser drift compounds \u2014 one idle tab leads to another. Try full-screen mode or a site blocker for the first 25 minutes of each session."
+      body:  "Try full-screen mode or a site blocker for the first 25 minutes."
     },
     q1_environment: {
-      title: "Signal \u2018focus mode\u2019 to your surroundings.",
-      body:  "Headphones, a closed door, or a consistent ambient sound tells others \u2014 and your own brain \u2014 that a session is in progress."
+      title: "Signal focus mode to your surroundings.",
+      body:  "Headphones or a closed door tells your brain a session is in progress."
     },
     q1_internal: {
       title: "Brain dump before you begin.",
-      body:  "Spend 2 minutes writing down anything on your mind before starting. Clearing working memory makes it far easier to stay present."
+      body:  "Two minutes writing down what\u2019s on your mind clears working memory."
     },
     q1_fatigue: {
-      title: "Match your hardest work to your energy peak.",
-      body:  "Your stability curve will show when you drift most. Guard your peak window for the work that demands the most from you."
+      title: "Match hard work to your energy peak.",
+      body:  "Your stability curve shows when you drift most \u2014 guard that window."
     },
     q2_early_morning: {
-      title: "Protect your mornings ruthlessly.",
-      body:  "Avoid checking email or social feeds before your first session. Those inputs fragment your best focus window before it even starts."
+      title: "Skip email and feeds before your first session.",
+      body:  "They fragment your best focus window before it starts."
     },
     q2_evening: {
-      title: "Evening sessions reward a consistent setup.",
-      body:  "Dim your space and use the same desk layout each time. Consistent environmental cues speed up the transition into deep focus."
+      title: "Use the same desk setup every evening.",
+      body:  "Consistent cues speed up the shift into deep focus."
     },
     q3_under_15: {
-      title: "Build focus duration gradually, week by week.",
-      body:  "Start with 10-minute targets and add 5 minutes each week. The stability curve shows exactly when you\u2019re pushing past your natural limit."
+      title: "Build duration gradually.",
+      body:  "Start at 10 minutes and add 5 each week. The curve shows when you\u2019re at your limit."
     },
     q3_15_30: {
-      title: "The 25-minute block is your starting sweet spot.",
-      body:  "A single focused block followed by a 5-minute break matches your current window. Track your score per session to see it grow."
+      title: "One 25-minute block, then a 5-minute break.",
+      body:  "Track your score each session to watch it grow."
     },
     q5_resistant: {
-      title: "Use a 2-minute commitment rule.",
-      body:  "When starting feels hard, commit to just opening the work and setting a 2-minute timer. Resistance almost always fades once momentum begins."
+      title: "Commit to just 2 minutes.",
+      body:  "Open the work and set a short timer. Resistance almost always fades once you start."
     },
     q6_starting: {
-      title: "Prepare tomorrow\u2019s first task tonight.",
-      body:  "Knowing exactly what to open eliminates the decision paralysis that drives procrastination. Write it in your goal before ending today."
+      title: "Decide tomorrow\u2019s first task tonight.",
+      body:  "Knowing exactly what to open removes the hesitation that leads to procrastination."
     },
     q6_interruptions: {
-      title: "A visible focus signal cuts interruptions significantly.",
-      body:  "Headphones, a status message, or a physical do-not-disturb cue reduces interruptions and teaches others your patterns over time."
+      title: "Use a visible focus signal.",
+      body:  "Headphones or a status message trains others to respect your session time."
     },
     q6_fatigue: {
-      title: "Protect recovery as seriously as sessions.",
-      body:  "Mental fatigue compounds across days. Short real breaks \u2014 away from screens \u2014 between sessions restore capacity faster than passive scrolling."
+      title: "Take real breaks away from screens.",
+      body:  "Short off-screen breaks restore capacity faster than passive scrolling."
     },
     q6_balance: {
-      title: "One focus area per session.",
-      body:  "Context-switching between projects costs more attention than it saves time. Commit each session to a single topic, logged in your goal."
+      title: "One topic per session.",
+      body:  "Context-switching costs more than it saves. Log your focus area in the goal field."
     },
     q6_staying: {
-      title: "Use the friction flag the moment you drift.",
-      body:  "Tapping the friction button the instant you notice a pull \u2014 not after \u2014 gives the stability curve its most accurate data and trains pattern awareness."
+      title: "Flag friction the moment you notice it.",
+      body:  "Tapping immediately \u2014 not after \u2014 gives the stability curve its most accurate data."
     },
     general: {
-      title: "Review your curve weekly, not after every session.",
-      body:  "Single sessions vary too much to judge. Weekly patterns in your stability curve reveal the real structure of your focus habits."
+      title: "Review your curve weekly, not daily.",
+      body:  "Weekly patterns reveal your real focus habits; single sessions vary too much."
     }
   };
 
