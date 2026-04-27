@@ -35,7 +35,7 @@
 
   // ─── State ────────────────────────────────────────────────────────────────────
   var view = "month";
-  var cursor = new Date(2026, 3, 1); // April 2026
+  var cursor = new Date();
   var selectedDate = null;
 
   // ─── Constants ────────────────────────────────────────────────────────────────
@@ -688,6 +688,7 @@
     document.querySelectorAll(".cal-filter-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
         view = this.getAttribute("data-view");
+        cursor = new Date();
         document.querySelectorAll(".cal-filter-btn").forEach(function (b) {
           b.classList.remove("cal-filter-btn--active");
         });
