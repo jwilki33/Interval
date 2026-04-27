@@ -38,18 +38,13 @@
 .dashboard-tiles {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: minmax(0, 1fr);
   gap: 1rem;
-  align-items: stretch;
-  flex: 1;
-  min-height: 0;
+  align-items: start;
 }
 
 .dashboard-tile {
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  height: 100%;
   border-radius: var(--radius-card);
   background: var(--surface);
   color: inherit;
@@ -75,8 +70,7 @@
 }
 
 .dashboard-tile__thumb {
-  flex: 1;
-  min-height: 0;
+  height: 180px;
   background: var(--surface-elevated);
   display: flex;
   align-items: center;
@@ -118,18 +112,11 @@
 @media (max-width: 900px) {
   .dashboard-tiles {
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    flex: none;
     max-width: 28rem;
   }
 
-  .dashboard-tile {
-    min-height: 18rem;
-  }
-
   .dashboard-tile__thumb {
-    flex: 1;
-    min-height: 11rem;
+    height: 160px;
   }
 }
 
@@ -427,8 +414,7 @@
 }
 
 .goal-form__legend {
-  float: left;
-  width: 100%;
+  display: block;
   padding: 0;
   margin: 0 0 0.4rem;
   font-size: calc(var(--font-caption) * 0.95);
