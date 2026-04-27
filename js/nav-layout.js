@@ -5,12 +5,12 @@
 (function () {
   "use strict";
 
-  var HAMBURGER_SVG =
-    '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
-    '<line x1="3" y1="6" x2="21" y2="6"/>' +
-    '<line x1="3" y1="12" x2="21" y2="12"/>' +
-    '<line x1="3" y1="18" x2="21" y2="18"/>' +
-    "</svg>";
+var HAMBURGER_SVG =
+  '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">' +
+  '<rect x="3" y="5" width="18" height="2.5"/>' +
+  '<rect x="3" y="11" width="18" height="2.5"/>' +
+  '<rect x="3" y="17" width="18" height="2.5"/>' +
+  "</svg>";
 
   function isTopNav() {
     return document.documentElement.getAttribute("data-nav-layout") === "top";

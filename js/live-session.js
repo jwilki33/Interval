@@ -694,75 +694,35 @@
 
     svg.setAttribute("viewBox", "0 0 24 24");
 
+    svg.setAttribute("fill", "currentColor");
+
+    var p = document.createElementNS(NS, "path");
+
     if (kind === "phone") {
 
-      svg.setAttribute("fill", "none");
+      p.setAttribute("fill-rule", "evenodd");
 
-      svg.setAttribute("stroke", "currentColor");
-
-      svg.setAttribute("stroke-width", "1.8");
-
-      var p = document.createElementNS(NS, "path");
-
-      p.setAttribute("d", "M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V5a2 2 0 012-2z");
-
-      svg.appendChild(p);
+      p.setAttribute("d", "M8 2L16 2L18 4L18 20L16 22L8 22L6 20L6 4ZM9 6L15 6L15 17L9 17Z");
 
     } else if (kind === "browser") {
 
-      svg.setAttribute("fill", "none");
+      p.setAttribute("fill-rule", "evenodd");
 
-      svg.setAttribute("stroke", "currentColor");
-
-      svg.setAttribute("stroke-width", "1.8");
-
-      var r = document.createElementNS(NS, "rect");
-
-      r.setAttribute("x", "3"); r.setAttribute("y", "3"); r.setAttribute("width", "18"); r.setAttribute("height", "18"); r.setAttribute("rx", "2");
-
-      svg.appendChild(r);
-
-      var chk = document.createElementNS(NS, "path");
-
-      chk.setAttribute("d", "M8 12l3 3 5-6");
-
-      svg.appendChild(chk);
+      p.setAttribute("d", "M2 3L22 3L22 21L2 21ZM3 4L3 8L21 8L21 4ZM5 11L19 11L19 13L5 13ZM5 15L15 15L15 17L5 17Z");
 
     } else if (kind === "heartrate") {
 
-      svg.setAttribute("fill", "none");
-
-      svg.setAttribute("stroke", "currentColor");
-
-      svg.setAttribute("stroke-width", "1.8");
-
-      var hr = document.createElementNS(NS, "path");
-
-      hr.setAttribute("d", "M2 12h3.5l2-5 3.5 10 3-7 2 4H22");
-
-      hr.setAttribute("stroke-linecap", "round");
-
-      hr.setAttribute("stroke-linejoin", "round");
-
-      svg.appendChild(hr);
+      p.setAttribute("d", "M2 11L5 11L6.5 6L9 16L11.5 9L13.5 13L15.5 11L22 11L22 13L15.5 13L13.5 17L11 10L8.5 19L6 9L5 13L2 13Z");
 
     } else {
 
-      svg.setAttribute("fill", "currentColor");
+      p.setAttribute("fill-rule", "evenodd");
 
-      var pin = document.createElementNS(NS, "path");
-
-      pin.setAttribute(
-
-        "d",
-
-        "M12 2C8.5 2 6 4.7 6 8c0 5 6 12 6 12s6-7 6-12c0-3.3-2.5-6-6-6zm0 9a3 3 0 110-6 3 3 0 010 6z"
-
-      );
-
-      svg.appendChild(pin);
+      p.setAttribute("d", "M12 2L20 9L20 14L14 20L12 22L10 20L4 14L4 9ZM10 9L14 9L14 13L10 13Z");
 
     }
+
+    svg.appendChild(p);
 
     return svg;
 
