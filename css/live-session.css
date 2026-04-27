@@ -22,10 +22,13 @@ html[data-theme="dark"] {
   --radius-card: 8px;
   --font-sans: "Rinter", system-ui, sans-serif;
   --font-mono: "Founders Grotesk Mono", ui-monospace, monospace;
-  /* Tracker: one body size for labels + values, one for captions */
   --text-scale-multiplier: 1;
   --font-ui: calc(0.8125rem * var(--text-scale-multiplier));
   --font-caption: calc(0.75rem * var(--text-scale-multiplier));
+  --shadow-card: 0 1px 4px rgba(0,0,0,0.45), 0 2px 14px rgba(0,0,0,0.3);
+  --shadow-card-hover: 0 4px 18px rgba(0,0,0,0.55), 0 10px 36px rgba(0,0,0,0.35);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-sm-hover: 0 3px 10px rgba(0,0,0,0.5);
 }
 
 html[data-text-scale="sm"] {
@@ -51,6 +54,10 @@ html[data-theme="light"] {
   --chart-grid-stroke: #d4d4d4;
   --chart-grid-mid: #b8b8b8;
   --dist-track-bg: #eaeaea;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.07), 0 2px 12px rgba(0,0,0,0.08);
+  --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.1), 0 10px 32px rgba(0,0,0,0.08);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-sm-hover: 0 3px 10px rgba(0,0,0,0.14);
 }
 
 /* Amber — warm dark mode that eliminates blue-spectrum light */
@@ -76,6 +83,10 @@ html[data-theme="amber"] {
   --text-scale-multiplier: 1;
   --font-ui: calc(0.8125rem * var(--text-scale-multiplier));
   --font-caption: calc(0.75rem * var(--text-scale-multiplier));
+  --shadow-card: 0 1px 4px rgba(0,0,0,0.5), 0 2px 14px rgba(0,0,0,0.35);
+  --shadow-card-hover: 0 4px 18px rgba(0,0,0,0.6), 0 10px 36px rgba(0,0,0,0.4);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.45);
+  --shadow-sm-hover: 0 3px 10px rgba(0,0,0,0.55);
 }
 
 *,
@@ -239,7 +250,7 @@ a.sidebar__brand--link:focus-visible {
   margin: 0 0 0.15rem;
   border-radius: var(--radius-card);
   background: var(--surface-elevated);
-  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
   max-height: min(70vh, 22rem);
   overflow-y: auto;
 }
@@ -417,15 +428,19 @@ html[data-reduced-motion="reduce"] *::after {
   font-size: var(--font-ui);
   font-weight: 600;
   letter-spacing: 0.02em;
-  transition: filter 0.15s ease, transform 0.1s ease;
+  box-shadow: var(--shadow-sm);
+  transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
 
 .btn-primary:hover {
   filter: brightness(1.08);
+  box-shadow: var(--shadow-sm-hover);
+  transform: translateY(-1px);
 }
 
 .btn-primary:active {
-  transform: scale(0.99);
+  transform: scale(0.99) translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary--end {
@@ -441,16 +456,19 @@ html[data-reduced-motion="reduce"] *::after {
   font-size: var(--font-ui);
   font-weight: 500;
   letter-spacing: 0.02em;
-  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
 }
 
 .btn-secondary:hover {
   border-color: var(--text-muted);
   color: var(--text);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
 }
 
 .btn-secondary:active {
-  transform: scale(0.99);
+  transform: scale(0.99) translateY(0);
+  box-shadow: none;
 }
 
 .btn-secondary:disabled {
@@ -539,7 +557,7 @@ html[data-reduced-motion="reduce"] *::after {
 .card {
   background: var(--surface);
   border-radius: var(--radius-card);
-  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
   padding: 1rem 1.1rem;
   display: flex;
   flex-direction: column;
@@ -866,15 +884,19 @@ html[data-reduced-motion="reduce"] *::after {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: none;
-  transition: filter 0.15s ease, transform 0.1s ease;
+  box-shadow: var(--shadow-sm);
+  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn-friction:hover {
   filter: brightness(1.12);
+  box-shadow: var(--shadow-sm-hover);
+  transform: translateY(-1px);
 }
 
 .btn-friction:active {
-  transform: scale(0.995);
+  transform: scale(0.995) translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-friction:disabled {
@@ -892,11 +914,11 @@ html[data-reduced-motion="reduce"] *::after {
 .friction-dialog {
   max-width: min(400px, calc(100vw - 2rem));
   padding: 0;
-  border: 1px solid var(--border-subtle);
+  border: none;
   border-radius: var(--radius-card);
   background: var(--surface);
   color: var(--text);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .friction-dialog::backdrop {
@@ -1053,11 +1075,11 @@ html[data-reduced-motion="reduce"] *::after {
 .session-summary-dialog {
   max-width: min(460px, calc(100vw - 2rem));
   padding: 0;
-  border: 1px solid var(--border-subtle);
+  border: none;
   border-radius: var(--radius-card);
   background: var(--surface);
   color: var(--text);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .session-summary-dialog::backdrop {

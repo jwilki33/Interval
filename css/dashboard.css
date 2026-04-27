@@ -51,33 +51,33 @@
   min-height: 0;
   height: 100%;
   border-radius: var(--radius-card);
-  border: 1px solid var(--border-subtle);
   background: var(--surface);
   color: inherit;
   text-decoration: none;
   overflow: hidden;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
 }
 
 .dashboard-tile:hover {
-  border-color: color-mix(in srgb, var(--deep) 45%, var(--border-subtle));
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
 }
 
 .dashboard-tile:active {
-  transform: scale(0.995);
+  transform: scale(0.995) translateY(0);
+  box-shadow: var(--shadow-card);
 }
 
 .dashboard-tile:focus-visible {
   outline: 2px solid var(--deep);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 .dashboard-tile__thumb {
   flex: 1;
   min-height: 0;
   background: var(--surface-elevated);
-  border-bottom: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -460,9 +460,9 @@
   gap: 0.55rem;
   align-items: flex-start;
   padding: 0.55rem 0.6rem;
-  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
   background: var(--surface-elevated);
+  box-shadow: var(--shadow-sm);
 }
 
 .goal-list__item--done .goal-list__text {

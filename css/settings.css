@@ -99,16 +99,20 @@
   border-radius: var(--radius-card);
   background: transparent;
   cursor: pointer;
-  transition: border-color 0.14s ease;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.14s ease, box-shadow 0.14s ease, transform 0.1s ease;
   position: relative;
 }
 
 .theme-card:hover {
   border-color: var(--text-muted);
+  box-shadow: var(--shadow-sm-hover);
+  transform: translateY(-1px);
 }
 
 .theme-card--active {
   border-color: var(--deep);
+  box-shadow: 0 0 0 1px var(--deep), var(--shadow-sm);
 }
 
 .theme-card__active-badge {
