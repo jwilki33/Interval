@@ -78,33 +78,33 @@
 
     phone: [
 
-      { label: "Quick glance",         sublabel: "under 1 min",  norm: 0.72 },
+      { label: "Quick glance",         sublabel: "under 1 min",  norm: 0.72, durationSec:  45 },
 
-      { label: "Short scroll",         sublabel: "1 \u2013 5 min",   norm: 0.84 },
+      { label: "Short scroll",         sublabel: "1 \u2013 5 min",   norm: 0.84, durationSec: 180 },
 
-      { label: "Extended use",         sublabel: "5 \u2013 15 min",  norm: 0.91 },
+      { label: "Extended use",         sublabel: "5 \u2013 15 min",  norm: 0.91, durationSec: 600 },
 
-      { label: "Long detour",          sublabel: "15+ min",      norm: 0.96 },
+      { label: "Long detour",          sublabel: "15+ min",      norm: 0.96, durationSec: 1200 },
 
     ],
 
     browser: [
 
-      { label: "Tab switch",           sublabel: "under 2 min",  norm: 0.58 },
+      { label: "Tab switch",           sublabel: "under 2 min",  norm: 0.58, durationSec:  90 },
 
-      { label: "Short browse",         sublabel: "2 \u2013 10 min",  norm: 0.72 },
+      { label: "Short browse",         sublabel: "2 \u2013 10 min",  norm: 0.72, durationSec: 360 },
 
-      { label: "Deep rabbit hole",     sublabel: "10+ min",      norm: 0.84 },
+      { label: "Deep rabbit hole",     sublabel: "10+ min",      norm: 0.84, durationSec: 900 },
 
     ],
 
     environment: [
 
-      { label: "Brief interruption",   sublabel: "under 2 min",  norm: 0.50 },
+      { label: "Brief interruption",   sublabel: "under 2 min",  norm: 0.50, durationSec:  90 },
 
-      { label: "Conversation",         sublabel: "2 \u2013 10 min",  norm: 0.63 },
+      { label: "Conversation",         sublabel: "2 \u2013 10 min",  norm: 0.63, durationSec: 360 },
 
-      { label: "Extended distraction", sublabel: "10+ min",      norm: 0.74 },
+      { label: "Extended distraction", sublabel: "10+ min",      norm: 0.74, durationSec: 900 },
 
     ],
 
@@ -226,11 +226,61 @@
 
 
 
-  function applyFrictionSpike(kind, normOverride) {
+  function applyFrictionSpike(kind, normOverride, durationSec) {
 
     var spike = (normOverride !== undefined) ? normOverride : FRICTION_SPIKE[kind];
 
     if (spike === undefined) return;
+
+    if (durationSec && durationSec > 0) {
+
+      var startElapsed = Math.max(0, totalSeconds - durationSec);
+
+      // Insert a boundary point at the start of the distraction window
+      var inserted = false;
+
+      var i;
+
+      for (i = 0; i < dataPoints.length; i++) {
+
+        if (dataPoints[i].elapsed >= startElapsed) {
+
+          if (dataPoints[i].elapsed === startElapsed) {
+
+            dataPoints[i].norm = Math.max(dataPoints[i].norm, spike);
+
+          } else {
+
+            dataPoints.splice(i, 0, { elapsed: startElapsed, norm: spike });
+
+          }
+
+          inserted = true;
+
+          break;
+
+        }
+
+      }
+
+      if (!inserted) {
+
+        dataPoints.push({ elapsed: startElapsed, norm: spike });
+
+      }
+
+      // Raise any existing points inside the distraction window to at least the spike level
+      for (i = 0; i < dataPoints.length; i++) {
+
+        if (dataPoints[i].elapsed >= startElapsed && dataPoints[i].elapsed <= totalSeconds) {
+
+          dataPoints[i].norm = Math.max(dataPoints[i].norm, spike);
+
+        }
+
+      }
+
+    }
 
     sessionNorm = clamp01(Math.max(sessionNorm, spike));
 
@@ -1166,6 +1216,8 @@
 
         btn.setAttribute("data-friction-norm", String(opt.norm));
 
+        btn.setAttribute("data-friction-duration", String(opt.durationSec || 0));
+
 
 
         var lbl = document.createElement("span");
@@ -1388,7 +1440,7 @@
     return document.documentElement.getAttribute("data-tracking-mode") === "active";
   }
 
-  function recordFriction(kind, normOverride) {
+  function recordFriction(kind, normOverride, durationSec) {
 
     if (state !== "running") return;
 
@@ -1396,7 +1448,7 @@
 
 
 
-    applyFrictionSpike(kind, normOverride);
+    applyFrictionSpike(kind, normOverride, durationSec);
 
     distractionCount += 1;
 
@@ -1520,7 +1572,9 @@
 
           var norm = parseFloat(target.getAttribute("data-friction-norm"));
 
-          if (pendingFrictionKind) recordFriction(pendingFrictionKind, norm);
+          var dur = parseInt(target.getAttribute("data-friction-duration"), 10) || 0;
+
+          if (pendingFrictionKind) recordFriction(pendingFrictionKind, norm, dur);
 
           closeFrictionDialog();
 
@@ -1566,7 +1620,7 @@
 
   window.IntervalSession = {
 
-    recordFriction: function (kind, normOverride) { recordFriction(kind, normOverride); },
+    recordFriction: function (kind, normOverride, durationSec) { recordFriction(kind, normOverride, durationSec); },
 
     nudgeNorm: function (targetNorm) { nudgeNorm(targetNorm); },
 

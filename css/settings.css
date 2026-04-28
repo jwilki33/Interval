@@ -229,6 +229,11 @@
   align-self: auto;
 }
 
+.settings-toggle-group--tracking .settings-toggle-btn {
+  flex: 1;
+  text-align: center;
+}
+
 .settings-toggle-btn {
   padding: 0.45rem 0.9rem;
   border: none;
